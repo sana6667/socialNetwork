@@ -1,4 +1,4 @@
-using System.ComponentModel.Annotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace socialNetwork.Services;
 
