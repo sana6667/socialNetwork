@@ -1,6 +1,12 @@
+using System.ComponentModel.Annotations;
+
 namespace socialNetwork.Services;
 
-public class BaseEntity
+public abstract class BaseEntity
 {
+    [Key]
+    public Guid Id { get; set; }
     
+    public DateTime CreateAt { get; set; }
+    public DateTime UpdateAt { get; set; }
 }
