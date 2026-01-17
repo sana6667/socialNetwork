@@ -13,6 +13,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa4f4e83-2819-4135-a7cc-0a9b3d3442b0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.socialNetwork.dir/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.socialNetwork.dir/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Properties/launchSettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/appsettings.Development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/net8.0/socialNetwork.AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/net8.0/socialNetwork.AssemblyInfoInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/net8.0/socialNetwork.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/net8.0/socialNetwork.GlobalUsings.g.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/net8.0/socialNetwork.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/net8.0/socialNetwork.csproj.AssemblyReference.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/socialNetwork.csproj.nuget.dgspec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/socialNetwork.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/socialNetwork.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/socialNetwork.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/socialNetwork.http" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Entities/BaseEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/BaseEntity.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -166,7 +193,7 @@
       <updated>1768140674079</updated>
       <workItem from="1768140675281" duration="2621000" />
       <workItem from="1768335857029" duration="101000" />
-      <workItem from="1768335994377" duration="1684000" />
+      <workItem from="1768335994377" duration="1921000" />
     </task>
     <servers />
   </component>

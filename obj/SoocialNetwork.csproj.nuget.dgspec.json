@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\RiderProjects\\SocialNetwork\\SocialNetwork.csproj": {}
+    "C:\\Users\\User\\RiderProjects\\SocialNetwork\\SoocialNetwork.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\RiderProjects\\SocialNetwork\\SocialNetwork.csproj": {
+    "C:\\Users\\User\\RiderProjects\\SocialNetwork\\SoocialNetwork.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\SocialNetwork\\SocialNetwork.csproj",
-        "projectName": "SocialNetwork",
-        "projectPath": "C:\\Users\\User\\RiderProjects\\SocialNetwork\\SocialNetwork.csproj",
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\SocialNetwork\\SoocialNetwork.csproj",
+        "projectName": "SoocialNetwork",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\SocialNetwork\\SoocialNetwork.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\User\\RiderProjects\\SocialNetwork\\obj\\",
         "projectStyle": "PackageReference",
