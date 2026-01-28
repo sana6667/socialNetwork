@@ -14,6 +14,9 @@ using SocialNetwork.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var jwt = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -63,11 +66,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//     .AddEntityFrameworkStores<ApplicationDbContext>();
-
-
-
 
 builder.Services.AddAuthentication(options =>
     {
@@ -82,9 +80,10 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://localhost:7253",
-            ValidAudience = "https://localhost:7253",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsAReallyLongSuperSecretKey123456"))
+            
+            ValidIssuer = jwt["Issuer"],
+            ValidAudience = jwt["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
 
@@ -126,4 +125,5 @@ app.MapControllers();
 
 
 app.Run();
+
 

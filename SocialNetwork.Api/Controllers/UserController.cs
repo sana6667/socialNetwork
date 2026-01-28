@@ -21,14 +21,18 @@ public class UserController :ControllerBase
     readonly ApplicationDbContext _dbContext;
     readonly UserManager<IdentityUser> _userManager;
     readonly SignInManager<IdentityUser> _signInManager;
-    //private readonly IEmailService _emailService;
+    readonly IConfiguration _config;
 
-    public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public UserController(ApplicationDbContext context, 
+        UserManager<IdentityUser> userManager, 
+        SignInManager<IdentityUser> signInManager,
+        IConfiguration config)
     {
         _dbContext = context;
         _userManager = userManager;
         _signInManager = signInManager;
-        //_emailService = emailService;
+        _config = config;
+        
     }
 
     [HttpPost("register")]
@@ -95,14 +99,15 @@ public class UserController :ControllerBase
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsAReallyLongSuperSecretKey123456"));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var jwt = _config.GetSection("Jwt");
+        var getKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
+        var creds = new SigningCredentials(getKey, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: "https://localhost:7253",
-            audience: "https://localhost:7253",
+            issuer: jwt["Issuer"],
+            audience: jwt["Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(30),
+            expires: DateTime.UtcNow.AddMinutes(double.Parse(jwt["ExpireMinutes"])),
             signingCredentials: creds);
 
         return Ok(new
