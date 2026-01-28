@@ -13,5 +13,6 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     }
     
     public DbSet<User> Users { get; set; }
+    public DbSet<RevokedToken> RevokedTokens { get; set; }
     
 }
