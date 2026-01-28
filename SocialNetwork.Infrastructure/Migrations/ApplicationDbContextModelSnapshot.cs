@@ -220,6 +220,24 @@ namespace SocialNetwork.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SocialNetwork.Domain.Entities.RevokedToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RevokedTokens");
+                });
+
             modelBuilder.Entity("SocialNetwork.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -235,6 +253,9 @@ namespace SocialNetwork.Infrastructure.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
