@@ -22,16 +22,18 @@ public class UserController :ControllerBase
     readonly UserManager<IdentityUser> _userManager;
     readonly SignInManager<IdentityUser> _signInManager;
     readonly IConfiguration _config;
+    readonly IEmailService _emailService;
 
     public UserController(ApplicationDbContext context, 
         UserManager<IdentityUser> userManager, 
         SignInManager<IdentityUser> signInManager,
-        IConfiguration config)
+        IConfiguration config, IEmailService emailService)
     {
         _dbContext = context;
         _userManager = userManager;
         _signInManager = signInManager;
         _config = config;
+        _emailService = emailService;
         
     }
 
@@ -134,6 +136,58 @@ public class UserController :ControllerBase
 
         return Ok("Logged out successfully. Token revoked.");
     }
+    
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return Ok(); // don't reveal if user exists
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        var link = Url.Action(
+            "ResetPassword",
+            "User",
+            new { email = user.Email, token },
+            Request.Scheme);
+
+        // send email
+        // await _emailService.SendAsync(
+        //     user.Email!,
+        //     "Reset password",
+        //     $"Click here: {link}"
+        // );
+
+        return Ok(new {message = "Reset link sent",
+                resetLink = link,
+                //generatedToken = token
+        });
+    }
+    
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(
+        string email,
+        string token,
+        string newPassword)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return BadRequest("Invalid user");
+
+        var result = await _userManager.ResetPasswordAsync(
+            user,
+            token,
+            newPassword);
+
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return Ok("Password changed successfully");
+    }
+
+    
+    
     [Authorize]
     [HttpGet("users")]
     public IActionResult GetUsers()
