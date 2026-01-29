@@ -185,8 +185,22 @@ public class UserController :ControllerBase
 
         return Ok("Password changed successfully");
     }
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+    {
+        var user = await _userManager.GetUserAsync(User);
 
-    
+        var result = await _userManager.ChangePasswordAsync(
+            user,
+            oldPassword,
+            newPassword);
+
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return Ok("Password changed");
+    }
     
     [Authorize]
     [HttpGet("users")]
