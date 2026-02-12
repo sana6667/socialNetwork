@@ -4,18 +4,15 @@ import { Register } from '../pages/Auth/Register';
 
 export const authRoutes: RouteObject[] = [
   {
-    path: '/',
+    path: '/register',
     element: <Register />,
   },
   {
-    path: '/register',
-
-  },
-  {
     path: '/login',
-
+    element: <h1>Login Page</h1>, // time constraints, so just a placeholder
   },
   {
     path: '/reset',
+    element: <h1>Reset Password</h1>, // time constraints, so just a placeholder
   },
 ];

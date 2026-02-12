@@ -1,3 +1,3 @@
 export const Register = () => {
-  return <div>Register</div>;
+  return <h1>Register Page </h1>;
 }
