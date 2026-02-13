@@ -1,0 +1,17 @@
+//#region abstracts
+@use './abstracts/variables';
+@use './abstracts/mixins';
+//endregion
+
+//#region base
+@use './base/global';
+@use './base/normalise';
+//endregion
+
+//#region components
+@use './components/buttons.scss';
+//endregion
+
+//#region pages
+@use './pages/auth/register.scss';
+//endregion
