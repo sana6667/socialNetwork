@@ -11,7 +11,7 @@ resource "aws_iam_role" "github_deploy" {
                 Action = "sts:AssumeRoleWithWebIdentity",
                 Condition = {
                     StringEquals = {
-                        "token.actions.githubusercontent.com:sub": "repo:sana6667/aspNetTest:ref:refs/heads/main"
+                        "token.actions.githubusercontent.com:sub": "repo:sana6667/socialNetworkTest:ref:refs/heads/main"
                     }
                 }
             }
