@@ -1,0 +1,37 @@
+name: Aws alb dns name apply
+on:
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+jobs:
+    dns_apply:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Terraform setup
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.14.4
+            - name: AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+                aws-region: ${{ secrets.AWS_REGION }}
+            - name: Terraform init
+              working-directory: Terraform/module/load-balancer
+              run: terraform init
+            - name: Terraform apply
+              working-directory: Terraform/module/load-balancer
+              run: terraform apply -auto-approve
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: alb-dns-tf
+                path: Terraform/module/load-balancer/terraform.tfstate
+            
+            

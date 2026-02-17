@@ -1,0 +1,13 @@
+{
+    "Objects": [
+        {
+            "Key": "global/s3/terraform.tfstate",
+            "VersionId": "ibki4SUKHCHz7SDKowh36ioqdbF5G7h3"
+        },
+        {
+            "Key": "global/s3/terraform.tfstate",
+            "VersionId": "7m_NidkmgMVqlN1DU3_TNUaBp7n7M8E0"
+        }
+    ],
+    "Quiet": null
+}

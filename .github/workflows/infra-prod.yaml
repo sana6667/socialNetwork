@@ -1,0 +1,40 @@
+name: Terraform infra prodactions apply
+on: 
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+env:
+    TF_WORKING_DIR: Terraform/module
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+    apply:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check
+              uses: actions/checkout@v4
+            - name: Terraform setup
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.14.4
+            - name: AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+                aws-region: ${{ env.AWS_REGION }}
+            - name: Terraform init
+              working-directory: ${{ env.TF_WORKING_DIR }}
+              run: terraform init
+            - name: Terraform apply
+              working-directory: ${{ env.TF_WORKING_DIR }}
+              run: terraform apply -auto-approve
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: infra-prod-tf
+                path: ${{ env.TF_WORKING_DIR }}/terraform.tfstate
+

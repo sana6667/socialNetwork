@@ -1,0 +1,57 @@
+name: Restart ALB Controller
+on:
+  workflow_dispatch:
+    inputs:
+      Runner_Id:
+        description: "Run ID of infra-prod-apply"
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  TF_WORKING_DIR: Terraform/module
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  restart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: infra-prod-tf
+          path: ${{ env.TF_WORKING_DIR }}
+          run-id: ${{ inputs.Runner_Id }}
+          github-token: ${{ github.token }}
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Terraform setup
+        uses: hashicorp/setup-terraform@v3
+        with:
+            terraform_version: 1.14.4
+
+      - name: Terraform init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform init
+
+      - name: Get outputs
+        id: out
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> "$GITHUB_OUTPUT"
+
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --region "${{ env.AWS_REGION }}" --name "${{ steps.out.outputs.CLUSTER_NAME }}"
+
+      - name: Restart ALB Controller
+        run: |
+          kubectl rollout restart deployment/aws-load-balancer-controller -n kube-system
+          kubectl rollout status deployment/aws-load-balancer-controller -n kube-system

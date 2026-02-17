@@ -1,0 +1,84 @@
+name: Docker build and push ecr
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  ecr-build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifact (tfstate)
+        uses: actions/download-artifact@v4
+        with:
+          name: ecr-tfstate
+          path: Terraform/module/stage/ecr-test
+          repository: sana6667/aspNetTest
+          run-id: 21874908988
+          github-token: ${{ github.token }}
+
+      - name: Show files after download
+        run: |
+          echo "PWD=$(pwd)"
+          ls -la
+          ls -la Terraform/module/stage/ecr-test || true
+          find Terraform/module/stage/ecr-test -maxdepth 2 -type f -print || true
+
+      - name: Normalize tfstate path if needed
+        run: |
+          set -e
+          BASE="Terraform/module/stage/ecr-test"
+          if [ ! -f "$BASE/terraform.tfstate" ]; then
+            CANDIDATE=$(find "$BASE" -name terraform.tfstate -type f | head -n 1 || true)
+            if [ -n "$CANDIDATE" ]; then
+              echo "Found state at: $CANDIDATE ; moving to $BASE/terraform.tfstate"
+              mv -f "$CANDIDATE" "$BASE/terraform.tfstate"
+            else
+              echo "ERROR: terraform.tfstate not found after artifact download."
+              exit 1
+            fi
+          fi
+          ls -la "$BASE"
+
+      - name: Terraform setup
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14.4
+
+      - name: AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::336670698191:role/github-deploy-role
+          aws-region: us-east-1
+
+      - name: Terraform init
+        working-directory: Terraform/module/stage/ecr-test
+        run: terraform init -input=false
+
+      - name: Read ECR outputs
+        id: ecr
+        working-directory: Terraform/module/stage/ecr-test
+        run: |
+          echo "ECR_URL=$(terraform output -raw ecr_url)" >> "$GITHUB_OUTPUT"
+          echo "ECR_ENDPOINT=$(terraform output -raw ecr_endpoint)" >> "$GITHUB_OUTPUT"
+          echo "ECR_REGION=$(terraform output -raw ecr_region)" >> "$GITHUB_OUTPUT"
+
+      - name: Docker image build
+        run: docker build -t diplom-app -f app/Dockerfile app
+
+      - name: Docker image tag
+        run: docker tag diplom-app:latest ${{ steps.ecr.outputs.ECR_URL }}:latest
+
+      - name: ECR login
+        run: |
+          aws ecr get-login-password --region "${{ steps.ecr.outputs.ECR_REGION }}" \
+            | docker login --username AWS --password-stdin "${{ steps.ecr.outputs.ECR_ENDPOINT }}"
+
+      - name: Push ECR
+        run: docker push "${{ steps.ecr.outputs.ECR_URL }}:latest"

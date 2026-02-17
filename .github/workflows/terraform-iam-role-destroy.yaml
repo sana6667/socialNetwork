@@ -1,0 +1,44 @@
+name: Terraform iam role destroy
+on:
+    workflow_dispatch:
+      inputs:
+        Runner_Id:
+          type: string
+          description: "Enter runner id"
+          required: true
+
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+jobs:
+    terraform-destroy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: iam-tfstate
+                path: Terraform/module/stage/iam-policy-test
+                run-id: ${{ inputs.Runner_Id }}
+                github-token: ${{ github.token }}
+            - name: Terraform setup
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.14.4
+            - name: Aws config credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: us-east-1
+            - name: Terraform init
+              working-directory: Terraform/module/stage/iam-policy-test
+              run: terraform init
+            - name: Terraform destroy
+              working-directory: Terraform/module/stage/iam-policy-test
+              run: terraform destroy -auto-approve
+

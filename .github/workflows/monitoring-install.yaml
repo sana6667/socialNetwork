@@ -1,0 +1,102 @@
+name: Install monitoring promitheus grafana
+on:
+    workflow_dispatch:
+        inputs:
+            Runner_Id:
+                description: "Enter runner id"
+                required: true
+                type: string
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+env:
+    K8S_TPL_DIR: k8s/templates
+    K8S_OUT_DIR: k8s/out
+jobs:
+    inst-monitor:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Terraform install
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.14.4
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: infra-prod-tf
+                run-id: ${{ inputs.Runner_Id }}
+                path: Terraform/module
+                github-token: ${{ github.token }}
+            - name: Aws credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+                aws-region: ${{ secrets.AWS_REGION }}
+            - name: Terraform init
+              working-directory: Terraform/module
+              run: terraform init
+            - name: Terrafrom outputs
+              working-directory: Terraform/module
+              id: tf-output
+              run: | 
+                echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> "$GITHUB_OUTPUT"
+                echo "VPC_ID=$(terraform output -raw vpc_id )" >> "$GITHUB_OUTPUT"
+            - name: Add repository monitoring
+              run: |
+                helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+                helm repo update
+            
+            - name: Update kubeconfig
+              run: |
+                aws eks update-kubeconfig \
+                    --region "${{ secrets.AWS_REGION }}" \
+                    --name "${{ steps.tf-output.outputs.CLUSTER_NAME }}"
+                kubectl config current-context
+                kubectl get nodes
+            
+            - name: Install envsubst & prepare out dir
+              run: |
+                sudo apt-get update && sudo apt-get install -y gettext-base
+
+
+            - name: Install monitoring
+              env:
+                CLUSTER_NAME: ${{ steps.tf-output.outputs.CLUSTER_NAME }}
+                VPC_ID: ${{ steps.tf-output.outputs.VPC_ID }}
+              run: |
+                helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+                  -n monitoring --create-namespace \
+                  -f helm_values/monitoring-values.yaml
+            - name: Prepare monitoring ingress
+              run: |
+                envsubst < "${{ env.K8S_TPL_DIR }}/monitoring-ingress.yaml.tpl" \
+                > "${{ env.K8S_OUT_DIR }}/monitoring-ingress.yaml"
+            
+            - name: Wait for Grafana/Prometheus pods ready
+              run: |
+                kubectl -n monitoring rollout status deploy/monitoring-grafana --timeout=300s || true
+                kubectl -n monitoring rollout status statefulset/monitoring-kube-prometheus-stack-prometheus --timeout=600s || true
+
+
+            - name: Apply monitoring ingress
+              run: |
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/monitoring-ingress.yaml"
+
+            - name: Apply ServiceMonitor
+              run: |
+                envsubst < "${{ env.K8S_TPL_DIR }}/servicemonitor.yaml.tpl" \
+                > "${{ env.K8S_OUT_DIR }}/servicemonitor.yaml"
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/servicemonitor.yaml"
+
+
+
+
+
+              
+              
+
+            

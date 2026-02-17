@@ -1,0 +1,29 @@
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.swp
+*.tmp
+*.bak
+*~
+
+# Docker
+docker-compose.override.yml
+*.env
+
+# Logs
+*.log
+
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+crash.log
+override.tf
+override.tf.json

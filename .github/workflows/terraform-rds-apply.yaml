@@ -1,0 +1,57 @@
+name: Terraform rds apply
+on:
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+jobs:
+    terraform-rds:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Terraform setup
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.14.4
+            - name: AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: arn:aws:iam::336670698191:role/github-terraform-role
+                aws-region: us-east-1
+            - name: Terraform rds init
+              working-directory: Terraform/module/stage/rds-test
+              run: terraform init
+            - name: Terraform rds apply
+              working-directory: Terraform/module/stage/rds-test
+              run: terraform apply -auto-approve
+            - name: Output rds enpoint
+              id: rds
+              working-directory: Terraform/module/stage/rds-test
+              run: | 
+                EP=$(terraform output -raw rds_enpoint)
+                echo "endpoint=$EP" >> "$GITHUB_OUTPUT"
+            - name: Mysql client install
+              run: | 
+                sudo apt update
+                sudo apt install -y mysql-client
+            - name: Run db migrations
+              env:
+                DB_HOST: ${{ steps.rds.outputs.endpoint }}
+                DB_USERNAME: ${{ secrets.DB_USERNAME }}
+                DB_PASS: ${{ secrets.DB_PASS }}
+                DB_NAME: aspnetdb
+              run: |
+                echo "Wait a bit for RDS to be ready..."
+                sleep 20
+                mysql --ssl-mode=PREFERRED -h $DB_HOST -P 3306 -u $DB_USERNAME -p"$DB_PASS" -D $DB_NAME < app/init.sql
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: rds-tfstate
+                path: Terraform/module/stage/rds-test/terraform.tfstate
+            

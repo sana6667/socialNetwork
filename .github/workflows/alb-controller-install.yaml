@@ -1,0 +1,69 @@
+name: Alb controller install
+on:
+    workflow_dispatch:
+        inputs:
+            Runner_Id:
+                type: string
+                description: "Enter runner id"
+                required: true
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+env:
+    TF_WORKING_DIR: Terraform/module 
+
+jobs:
+    alb_install:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Terraform setup
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.14.4
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: infra-prod-tf
+                path: ${{ env.TF_WORKING_DIR }}
+                run-id: ${{ inputs.Runner_Id }}
+                github-token: ${{ github.token }}
+            - name: Terraform init
+              working-directory: ${{ env.TF_WORKING_DIR }}
+              run: terraform init
+            - name: tf output
+              id: tf_outputs
+              working-directory: ${{ env.TF_WORKING_DIR }}
+              run: |
+                CLUSTER_NAME=$(terraform output -raw eks_cluster_name)
+                VPC_ID=$(terraform output -raw vpc_id)
+                echo "cluster_name=$CLUSTER_NAME" >> "$GITHUB_OUTPUT"
+                echo "vpc_id=$VPC_ID" >> "$GITHUB_OUTPUT"
+            - name: AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+                aws-region: ${{ secrets.AWS_REGION }}
+            - name: update kubeconfig
+              run: aws eks update-kubeconfig --region "${{ secrets.AWS_REGION }}" --name "${{ steps.tf_outputs.outputs.cluster_name }}"
+            - name: helm repo
+              run: |
+                helm repo add eks https://aws.github.io/eks-charts
+                helm repo update
+            - name: alb service account
+              working-directory: k8s/alb-controller
+              run: kubectl apply -f aws-load-balancer-controller-sa.yaml
+            - name: Install aws alb controller
+              run: |
+                helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
+                --namespace kube-system \
+                --set clusterName="${{ steps.tf_outputs.outputs.cluster_name }}" \
+                --set region="${{ secrets.AWS_REGION }}" \
+                --set vpcId="${{ steps.tf_outputs.outputs.vpc_id}}" \
+                --set serviceAccount.create=false \
+                --set serviceAccount.name=aws-load-balancer-controller
+
+

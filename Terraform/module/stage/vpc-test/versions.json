@@ -1,0 +1,38 @@
+{
+    "Versions": [
+        {
+            "ETag": "\"fcd676957f78b4e9bd42a4988b0deb7e\"",
+            "ChecksumAlgorithm": [
+                "SHA256"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 7899,
+            "StorageClass": "STANDARD",
+            "Key": "global/s3/terraform.tfstate",
+            "VersionId": "ibki4SUKHCHz7SDKowh36ioqdbF5G7h3",
+            "IsLatest": true,
+            "LastModified": "2026-02-08T07:47:32+00:00",
+            "Owner": {
+                "ID": "c1d903c4413065557004e6046a654b57497dce24bff4f294ee44783cd3304ce5"
+            }
+        },
+        {
+            "ETag": "\"5c52ff1c263de3c7757bbbfab6a83169\"",
+            "ChecksumAlgorithm": [
+                "SHA256"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 7901,
+            "StorageClass": "STANDARD",
+            "Key": "global/s3/terraform.tfstate",
+            "VersionId": "7m_NidkmgMVqlN1DU3_TNUaBp7n7M8E0",
+            "IsLatest": false,
+            "LastModified": "2026-02-08T07:42:02+00:00",
+            "Owner": {
+                "ID": "c1d903c4413065557004e6046a654b57497dce24bff4f294ee44783cd3304ce5"
+            }
+        }
+    ],
+    "RequestCharged": null,
+    "Prefix": ""
+}

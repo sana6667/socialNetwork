@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY backend/SocialNetwork.sln ./backend/
+COPY backend/SocialNetwork.Domain/SocialNetwork.Domain.csproj backend/SocialNetwork.Domain/
+COPY backend/SocialNetwork.Application/SocialNetwork.Application.csproj backend/SocialNetwork.Application/
+COPY backend/SocialNetwork.Infrastructure/SocialNetwork.Infrastructure.csproj backend/SocialNetwork.Infrastructure/
+COPY backend/SocialNetwork.Api/SocialNetwork.Api.csproj backend/SocialNetwork.Api/
+
+RUN dotnet restore backend/SocialNetwork.Api/SocialNetwork.Api.csproj
+
+COPY backend/ backend/
+
+RUN dotnet tool install --global dotnet-ef --version 8.*
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+WORKDIR /src/backend/SocialNetwork.Api
+ENTRYPOINT ["dotnet", "ef", "database", "update", "--project", "../SocialNetwork.Infrastructure", "--startup-project", "."]
