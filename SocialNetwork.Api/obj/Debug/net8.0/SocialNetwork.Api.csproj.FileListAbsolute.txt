@@ -145,11 +145,6 @@ D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\SocialNetwork.
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\SocialNetwork.Api.sourcelink.json
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets.build.json
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets.development.json
-D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets\msbuild.SocialNetwork.Api.Microsoft.AspNetCore.StaticWebAssets.props
-D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets\msbuild.build.SocialNetwork.Api.props
-D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.SocialNetwork.Api.props
-D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.SocialNetwork.Api.props
-D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets.pack.json
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\scopedcss\bundle\SocialNetwork.Api.styles.css
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\SocialNe.E970B44C.Up2Date
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\SocialNetwork.Api.dll
@@ -157,3 +152,8 @@ D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\refint\SocialN
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\SocialNetwork.Api.pdb
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\SocialNetwork.Api.genruntimeconfig.cache
 D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\ref\SocialNetwork.Api.dll
+D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets\msbuild.SocialNetwork.Api.Microsoft.AspNetCore.StaticWebAssets.props
+D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets\msbuild.build.SocialNetwork.Api.props
+D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.SocialNetwork.Api.props
+D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.SocialNetwork.Api.props
+D:\RiderProjects\SocialNetwork\SocialNetwork.Api\obj\Debug\net8.0\staticwebassets.pack.json

@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SocialNetwork.Application.Dtos;
 using SocialNetwork.Application.Interfaces;
 using SocialNetwork.Domain.Entities;
 using SocialNetwork.Infrastructure.Data;
@@ -19,49 +19,94 @@ namespace SocialNetwork.Api.Controllers;
 public class UserController :ControllerBase
 {
     readonly ApplicationDbContext _dbContext;
-    readonly UserManager<IdentityUser> _userManager;
-    readonly SignInManager<IdentityUser> _signInManager;
+    readonly UserManager<User> _userManager;
+    readonly SignInManager<User> _signInManager;
     readonly IConfiguration _config;
     readonly IEmailService _emailService;
+    readonly IUserService _userService;
+    readonly RoleManager<IdentityRole> _roleManager;
 
     public UserController(ApplicationDbContext context, 
-        UserManager<IdentityUser> userManager, 
-        SignInManager<IdentityUser> signInManager,
-        IConfiguration config, IEmailService emailService)
+        UserManager<User> userManager, 
+        SignInManager<User> signInManager,
+        IConfiguration config, IEmailService emailService,
+        IUserService userService, RoleManager<IdentityRole> roleManager)
     {
         _dbContext = context;
         _userManager = userManager;
         _signInManager = signInManager;
         _config = config;
         _emailService = emailService;
-        
+        _userService = userService;
+        _roleManager = roleManager;
+
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] User user)
+    public async Task<IActionResult> Register(string username, string? password,
+        string city, string name,
+        List<int>? interestIds, List<int>? priorityIds)
     {
-        var identityUser = new IdentityUser
+        if (string.IsNullOrWhiteSpace(username))
         {
-            UserName = user.Username,
-            Email = user.Email
+            return BadRequest("Email or phone is required");
+        }
+
+        var user = new User
+        {
+            UserName = username,
+            PhoneNumber = username.Contains("@")? null:username,
+            Email = username.Contains("@")? username:null,
+            Name = name,
+            City = city
         };
 
-        var result = await _userManager.CreateAsync(identityUser, "P@ssw0rd");
+        var result = await _userManager.CreateAsync(user, password);
         if (!result.Succeeded)
             return BadRequest(result.Errors);
+        
+        
+        foreach (var interestId in interestIds.Distinct())
+        {
+            _dbContext.UserInterests.Add(new UserInterest
+            {
+                UserId = user.Id,
+                InterestId = interestId
+            });
+            
+           
 
-        user.IdentityUserId = identityUser.Id;
-        _dbContext.Users.Add(user);
+        }
+
+        foreach (var priorityId in priorityIds.Distinct())
+        {
+            _dbContext.UserPriorities.Add(new UserPriority
+            {
+                UserId = user.Id,
+                PriorityId = priorityId
+            });
+           
+        }
+
         await _dbContext.SaveChangesAsync();
+        
+        
+        await _userManager.AddToRoleAsync(user, "User");
 
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(identityUser);
+        if(user.Email != null)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-        var link = Url.Action("ConfirmEmail", "User",
-            new { id = identityUser.Id, token },
-            Request.Scheme);
+
+            var link = Url.Action("ConfirmEmail", "User",
+                new { id = user.Id, token },
+                Request.Scheme);
+            
+            return Ok(new { message = "User created. Please confirm email.", confirmLink = link });
+        }
 
         // TODO: send link via email
-        return Ok(new { message = "User created. Please confirm email.", confirmLink = link });
+        return Ok(new { message = "User created "});
     }
     
     [HttpGet("confirm-email")]
@@ -81,26 +126,43 @@ public class UserController :ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+    public async Task<IActionResult> Login(string username, string password)
     {
-        var user = await _userManager.FindByNameAsync(loginDto.Username);
-        if (user == null)
-            return Unauthorized("Invalid credentials");
+        User? user = null;
 
-        if (!user.EmailConfirmed)
-            return Unauthorized("Email not confirmed");
-
-        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-        if (!result.Succeeded)
-            return Unauthorized("Invalid credentials");
-
-        var claims = new[]
+        if (username.Contains("@"))
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+            user = await _userManager.FindByEmailAsync(username);
+        }
+        else
+        {
+            user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber==username);
+            
+        }
+
+        if (user == null)
+        {
+            return Unauthorized("Invalid credentials");
+        }
+        
+
+        var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+        if (!result.Succeeded)
+        {
+            return Unauthorized("Invalid credentials");
+        }
+
+        var roles = await _userManager.GetRolesAsync(user);
+        
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Email, user.Email ?? ""),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
+        claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+        
         var jwt = _config.GetSection("Jwt");
         var getKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
         var creds = new SigningCredentials(getKey, SecurityAlgorithms.HmacSha256);
@@ -118,6 +180,8 @@ public class UserController :ControllerBase
             expiration = token.ValidTo
         });
     }
+    
+    [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout([FromHeader(Name = "Authorization")] string authHeader)
     {
@@ -201,8 +265,43 @@ public class UserController :ControllerBase
 
         return Ok("Password changed");
     }
-    
+
     [Authorize]
+    [HttpPost("upload-image")]
+    public async Task<IActionResult> UploadProfileImage(IFormFile file)
+    {
+        var fileName = $"{Guid.NewGuid()}.jpg";
+        var path = Path.Combine("wwwroot/images", fileName);
+        using var stream = new FileStream(path, FileMode.Create);
+        await file.CopyToAsync(stream);
+        var url = $"{Request.Scheme}{Request.Host}/images/{fileName}";
+        
+       
+        var user = await _userManager.GetUserAsync(User);
+        user.ImageUrl = url;
+        await _userManager.UpdateAsync(user);
+        return Ok(url);
+    }
+
+    // [Authorize]
+    // [HttpPost("set-interests")]
+    // public async Task<IActionResult> SetInterests(List<int> interestIds)
+    // {
+    //     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    //     await _userService.SetInterestsAsync(userId, interestIds);
+    //     return Ok();
+    // }
+    
+    // [Authorize]
+    // [HttpPost("set-priorities")]
+    // public async Task<IActionResult> SetPrioriries(List<int> priorityIds)
+    // {
+    //     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    //     await _userService.SetPrioritiesAsync(userId, priorityIds);
+    //     return Ok();
+    // }
+    
+    [Authorize(Roles = "Admin")]
     [HttpGet("users")]
     public IActionResult GetUsers()
     {

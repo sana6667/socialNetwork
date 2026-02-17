@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2U3dpI5j1t0=",
+  "dgSpecHash": "uzDzca+5odyOfsmlupGOcTZm8DePla0yd/6MpLgSI2ENIRhmEFOvCrLsSHF04dqMzgY6wokk9fZJeMbNaKmO4w==",
   "success": true,
   "projectFilePath": "D:\\RiderProjects\\SocialNetwork\\SocialNetwork.Infrastructure\\SocialNetwork.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -86,10 +86,7 @@
     "C:\\Users\\User\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\User\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
-    "C:\\Users\\User\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.23\\microsoft.netcore.app.ref.8.0.23.nupkg.sha512",
-    "C:\\Users\\User\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.23\\microsoft.windowsdesktop.app.ref.8.0.23.nupkg.sha512",
-    "C:\\Users\\User\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.23\\microsoft.aspnetcore.app.ref.8.0.23.nupkg.sha512"
+    "C:\\Users\\User\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }

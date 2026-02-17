@@ -10,3 +10,4 @@ D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwo
 D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\refint\SocialNetwork.Domain.dll
 D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.pdb
 D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\ref\SocialNetwork.Domain.dll
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.csproj.AssemblyReference.cache

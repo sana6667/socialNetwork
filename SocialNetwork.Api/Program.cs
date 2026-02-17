@@ -10,9 +10,11 @@ using SocialNetwork.Api.Controllers;
 using SocialNetwork.Api.Middleware;
 using SocialNetwork.Application.Interfaces;
 using SocialNetwork.Application.Services;
+using SocialNetwork.Domain.Entities;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build(); 
 
 var jwt = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
@@ -53,9 +55,27 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(UserController).Assembly);
 
-
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+
+builder.Services.AddScoped<IInterestService, InterestService>();
+builder.Services.AddScoped<IPriorityService, PriorityService>();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    string[] roles = { "User", "Admin" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
+builder.Services.AddIdentity<User, IdentityRole>(options =>
     {
         options.SignIn.RequireConfirmedEmail = true;
     })
@@ -89,7 +109,7 @@ builder.Services.AddAuthentication(options =>
 
 
 
-var app = builder.Build();
+
 
 app.UseCors(x => x
     .AllowAnyOrigin()

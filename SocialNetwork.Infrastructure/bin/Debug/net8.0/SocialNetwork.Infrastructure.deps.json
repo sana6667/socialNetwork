@@ -897,6 +897,9 @@
         }
       },
       "SocialNetwork.Domain/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Identity.Stores": "8.0.0"
+        },
         "runtime": {
           "SocialNetwork.Domain.dll": {}
         }

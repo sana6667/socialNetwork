@@ -1170,13 +1170,17 @@
       "SocialNetwork.Application/1.0.0": {
         "dependencies": {
           "SendGrid": "9.29.3",
-          "SocialNetwork.Domain": "1.0.0"
+          "SocialNetwork.Domain": "1.0.0",
+          "SocialNetwork.Infrastructure": "1.0.0"
         },
         "runtime": {
           "SocialNetwork.Application.dll": {}
         }
       },
       "SocialNetwork.Domain/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Identity.Stores": "8.0.0"
+        },
         "runtime": {
           "SocialNetwork.Domain.dll": {}
         }
