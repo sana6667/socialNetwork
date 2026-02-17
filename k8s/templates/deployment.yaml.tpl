@@ -20,9 +20,11 @@ spec:
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Development"
-          # Если Kestrel не слушает 80 - раскомментируй:
-          # env:
-          #   - { name: ASPNETCORE_URLS, value: "http://0.0.0.0:80" }
+            
+            - name: ASPNETCORE_URLS    # Явно зафиксируем, чтобы не было споров
+              value: "http://0.0.0.0:80"
+
+          
             - name: ConnectionStrings__DefaultConnection
               valueFrom:
                 secretKeyRef:
