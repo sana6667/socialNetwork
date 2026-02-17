@@ -10,7 +10,7 @@ resource "aws_iam_role" "alb_controller" {
             },
             Condition = {
                 StringEquals = {
-                    "${local.oidc_host}:aut" = "sts.amazonaws.com",
+                    "${local.oidc_host}:aud" = "sts.amazonaws.com",
                     "${local.oidc_host}:sub" = local.sa_sub
                 }
             }
