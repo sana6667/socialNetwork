@@ -15,6 +15,8 @@ permissions:
 env:
   TF_WORKING_DIR: Terraform/module
   AWS_REGION: ${{ secrets.AWS_REGION }}
+  K8S_OUT_DIR: k8s/out
+  K8S_TPL_DIR: k8s/templates
 
 jobs:
   debug:
@@ -72,3 +74,35 @@ jobs:
 
       - name: Show services
         run: kubectl get svc -n default -o wide
+
+      - name: Helm repos and releases
+        run: |
+          set -euo pipefail
+          helm repo list
+          helm list -A
+          kubectl -n kube-system get deploy,pods | grep -i alb || true
+          kubectl -n monitoring get deploy,sts,pods,svc 2>/dev/null || true
+
+      - name: Show generated manifests (head)
+        run: |
+          set -euo pipefail
+          ls -la "${{ env.K8S_OUT_DIR }}"
+          for f in secret-mssql.yaml job-ef.yaml deployment.yaml service.yaml ingress.yaml; do
+            echo "===== $f ====="
+            sed -n '1,60p' "${{ env.K8S_OUT_DIR }}/$f" || true
+            echo
+          done
+      - name: Check Secret mssql-conn
+        run: |
+          set -euo pipefail
+          kubectl get secret mssql-conn -n default -o yaml | sed -n '1,80p'
+
+      - name: Check CRDs and namespaces
+        run: |
+          set -euo pipefail
+          kubectl get ns
+          kubectl get crd | egrep 'servicemonitors|prometheuses|alertmanagers|targetgroupbindings' || true
+      - name: Check ALB Controller SA & IAM role annotation
+        run: |
+          set -euo pipefail
+          kubectl -n kube-system get sa aws-load-balancer-controller -o yaml | sed -n '1,120p'
