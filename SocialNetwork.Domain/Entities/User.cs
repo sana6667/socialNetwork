@@ -1,12 +1,14 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace SocialNetwork.Domain.Entities;
 
-public class User
+public class User :IdentityUser
 {
-    public Guid Id { get; set; }
-    public string? IdentityUserId { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public DateOnly Birthday { get; set; }
+    public string Name { get; set; }
+    public string ImageUrl { get; set; }
+    public string City { get; set; }
+    
+    public List<UserInterest> Interests { get; set; } = new ();
+    public List<UserPriority> Priorities { get; set; } = new ();
+    
 }
