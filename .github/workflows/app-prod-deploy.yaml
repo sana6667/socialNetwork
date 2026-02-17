@@ -103,7 +103,7 @@ jobs:
             
             - name: Apply k8s manifest - secret
               run: |
-                kubectl apply -f "${{ env.K8S_OUT_DIR }}/secret-mssql.yaml
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/secret-mssql.yaml"
 
             - name: Apply manifest migrator db
               run: |
