@@ -12,13 +12,11 @@ using SocialNetwork.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- JWT -----------------------------------------------------
-
+// --- JWT ---
 var jwt = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
 
-// --- Swagger --------------------------------------------------
-
+// --- Swagger ---
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -50,34 +48,30 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// --- Controllers ---------------------------------------------
-
+// --- Controllers ---
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(UserController).Assembly);
 
-// --- Services -------------------------------------------------
-
+// --- Services ---
 builder.Services.AddScoped<IEmailService, EmailService>();
 
-// --- Identity -------------------------------------------------
-
+// --- Identity ---
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmed})
+    options.SignIn.RequireConfirmedEmail = true;
+})
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// --- DB -------------------------------------------------------
-
+// --- Database ---
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// --- Authentication -------------------------------------------
-
+// --- Authentication ---
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
@@ -96,24 +90,17 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// --- CORS -----------------------------------------------------
-
+// --- CORS ---
 app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-// ============================
-// 🔥 PROMETHEUS METRICS (делаем раньше авторизации!)
-// ============================
+// --- PROMETHEUS METRICS (до авторизации) ---
+app.UseMetricServer();
+app.UseHttpMetrics();
 
-app.UseMetricServer();   // /metrics
-app.UseHttpMetrics();    // latency, errors, status codes
-
-// ============================
-
-// --- Swagger (только Dev) ------------------------------------
-
+// --- Swagger Dev Only ---
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -124,22 +111,17 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// --- Static files / Routing ----------------------------------
-
+// --- Static files & Routing ---
 app.UseStaticFiles();
 app.UseRouting();
 
-// --- Auth pipeline -------------------------------------------
-
+// --- Auth pipeline ---
 app.UseAuthentication();
 app.UseMiddleware<JwtRevocationMiddleware>();
 app.UseAuthorization();
 
-// --- Map controllers -----------------------------------------
-
+// --- Controllers ---
 app.MapControllers();
 
-// --- run ------------------------------------------------------
-
+// --- Run ---
 app.Run();
-
