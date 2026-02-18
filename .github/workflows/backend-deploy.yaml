@@ -1,0 +1,60 @@
+name: Redeploy Backend API
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "k8s/templates"
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+          aws-region: us-east-1
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --name priv-cluster-eks \
+            --region us-east-1
+
+      - name: Install envsubst & jq
+        run: sudo apt-get update && sudo apt-get install -y gettext-base jq
+
+      - name: Prepare monitoring ingress
+        run: |
+          envsubst < "k8s/templates/ingress.yaml.tpl" \
+          > "k8s/out/ingress.yaml"
+
+      - name: Deploy backend manifests
+        run: |
+          kubectl apply -f k8s/out/ingress.yaml
+
+      - name: Diagnose backend
+        run: |
+          echo "==== BACKEND PODS ===="
+          kubectl -n default get pods -o wide
+
+          echo "==== BACKEND SVC ===="
+          kubectl -n default get svc backend-service -o wide
+
+          echo "==== BACKEND INGRESS ===="
+          kubectl -n default get ingress backend -o wide
+
+          echo "==== BACKEND LOGS ===="
+          for pod in $(kubectl -n default get pod -l app=backend -o jsonpath='{.items[*].metadata.name}'); do
+            echo "--- $pod ---"
+            kubectl -n default logs $pod --tail=200
+          done
