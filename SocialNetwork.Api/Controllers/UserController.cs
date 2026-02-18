@@ -73,9 +73,6 @@ public class UserController :ControllerBase
                 UserId = user.Id,
                 InterestId = interestId
             });
-            
-
-
         }
 
         foreach (var priorityId in priorityIds.Distinct())
