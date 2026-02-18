@@ -74,7 +74,7 @@ public class UserController :ControllerBase
                 InterestId = interestId
             });
             
-           
+
 
         }
 
