@@ -37,13 +37,23 @@ jobs:
           kubectl get nodes
           kubectl get ns
 
+      - name: Install envsubst & jq
+        run: sudo apt-get update && sudo apt-get install -y gettext-base jq
+
+      - name: Prepare monitoring ingress
+        run: |
+          envsubst < "k8s/templates/monitoring-ingress.yaml.tpl" \
+          > "k8s/out/monitoring-ingress.yaml"
+          envsubst < "k8s/tepmlates/servicemonitor.yaml.tpl" \
+          > "k8s/out/servicemonitor.yaml"
+
       - name: Apply Grafana ingress
         run: |
-          kubectl apply -f k8s/monitoring/grafana-ingress.yaml
+          kubectl apply -f k8s/out/monitoring-ingress.yaml
 
       - name: Apply additional monitoring manifests
         run: |
-          kubectl apply -f k8s/monitoring/
+          kubectl apply -f k8s/out/servicemonitor.yaml
 
       - name: Backend diagnostics
         run: |
