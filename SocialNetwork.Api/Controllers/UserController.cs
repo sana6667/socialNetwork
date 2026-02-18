@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SocialNetwork.Application.Dtos;
 using SocialNetwork.Application.Interfaces;
 using SocialNetwork.Domain.Entities;
 using SocialNetwork.Infrastructure.Data;
@@ -43,30 +44,28 @@ public class UserController :ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(string username, string? password,
-        string city, string name,
-        List<int>? interestIds, List<int>? priorityIds)
+    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
-        if (string.IsNullOrWhiteSpace(username))
+        if (string.IsNullOrWhiteSpace(registerDto.Username))
         {
             return BadRequest("Email or phone is required");
         }
 
         var user = new User
         {
-            UserName = username,
-            PhoneNumber = username.Contains("@")? null:username,
-            Email = username.Contains("@")? username:null,
-            Name = name,
-            City = city
+            UserName = registerDto.Username,
+            PhoneNumber = registerDto.Username.Contains("@")? null:registerDto.Username,
+            Email = registerDto.Username.Contains("@")? registerDto.Username:null,
+            Name = registerDto.Name,
+            City = registerDto.City
         };
 
-        var result = await _userManager.CreateAsync(user, password);
+        var result = await _userManager.CreateAsync(user, registerDto.Password);
         if (!result.Succeeded)
             return BadRequest(result.Errors);
         
         
-        foreach (var interestId in interestIds.Distinct())
+        foreach (var interestId in registerDto.InterestIds.Distinct())
         {
             _dbContext.UserInterests.Add(new UserInterest
             {
@@ -75,7 +74,7 @@ public class UserController :ControllerBase
             });
         }
 
-        foreach (var priorityId in priorityIds.Distinct())
+        foreach (var priorityId in registerDto.PriorityIds.Distinct())
         {
             _dbContext.UserPriorities.Add(new UserPriority
             {
