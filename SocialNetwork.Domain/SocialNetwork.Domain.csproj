@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< Updated upstream
-
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.9" />
-
-=======
->>>>>>> Stashed changes
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.0" />
   </ItemGroup>
 
