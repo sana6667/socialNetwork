@@ -2,9 +2,7 @@ name: Redeploy Backend API
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "k8s/templates"
+
 
 jobs:
   deploy-backend:
