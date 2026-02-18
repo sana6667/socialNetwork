@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "k8s/monitoring/**"
-      - "k8s/monitoring/grafana-ingress.yaml"
+      - "k8s/templates/**"
 
 
 jobs:
@@ -44,7 +43,7 @@ jobs:
         run: |
           envsubst < "k8s/templates/monitoring-ingress.yaml.tpl" \
           > "k8s/out/monitoring-ingress.yaml"
-          envsubst < "k8s/tepmlates/servicemonitor.yaml.tpl" \
+          envsubst < "k8s/templates/servicemonitor.yaml.tpl" \
           > "k8s/out/servicemonitor.yaml"
 
       - name: Apply Grafana ingress
