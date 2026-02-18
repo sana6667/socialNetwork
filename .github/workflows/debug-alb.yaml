@@ -101,6 +101,9 @@ jobs:
       - name: Info grafana
         run : kubectl -n monitoring get svc
 
+      - name: InFO ALB
+        run: kubectl get ingress -A
+
       # =========================================================
       # ===============  DEBUG BLOCK END  ========================
       # =========================================================
