@@ -5,5 +5,5 @@ variable "dns_lb" {
 
 variable "dns_lb_monitoring" {
     type = string
-    default = "monitoring.soc-net.lat"
+    default = "monitor.soc-net.lat"
 }
