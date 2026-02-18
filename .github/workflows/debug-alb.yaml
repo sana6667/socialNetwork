@@ -98,6 +98,9 @@ jobs:
       - name: 📌 Helm releases
         run: helm list -A || true
 
+      - name: Info grafana
+        run : kubectl -n monitoring get svc
+
       # =========================================================
       # ===============  DEBUG BLOCK END  ========================
       # =========================================================
