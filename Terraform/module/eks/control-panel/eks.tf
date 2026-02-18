@@ -8,6 +8,6 @@ resource "aws_eks_cluster" "eks_priv_endpoint" {
         endpoint_public_access = true
     }
     
-    
     depends_on = [ aws_iam_role_policy_attachment.cluster_policy ]
 }
+

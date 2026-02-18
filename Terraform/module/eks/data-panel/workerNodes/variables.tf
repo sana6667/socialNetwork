@@ -8,7 +8,7 @@ variable "config_workers" {
     default = {
         node_gr_name = "prod-node-gr"
         iam_role_name = "eks-node-role"
-        instance_typ_value = "t3.small"
+        instance_typ_value = "m7i-flex.large"
         label_value = "nodes"
     }
 }

@@ -6,7 +6,7 @@ resource "aws_eks_node_group" "node_gr" {
     subnet_ids = var.conf_network_import.sub_priv_value
     scaling_config {
         desired_size = 1
-        max_size = 1
+        max_size = 2
         min_size = 1
     }
     update_config {
