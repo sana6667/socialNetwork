@@ -1,7 +1,24 @@
-export const Step2 = () => {
+type Step2Props = {
+  onNext: () => void;
+  onBack: () => void;
+};
+
+export const Step2 = (props: Step2Props) => {
+  const { onNext, onBack } = props;
   return (
-    <div>
-      <h1>Step 2: Profile Details</h1>
+    <div className="auth__container">
+      <p className="auth__back" onClick={onBack}><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</p>
+      <progress className="auth__progress" value={1} max={4}></progress>
+      <h1 className="auth__page__title">
+        What’s your name?
+      </h1>
+      <form action="" className="auth__form" onSubmit={onNext}>
+        <div className="auth__input__container">
+          <input type="text" className="auth__input__field" placeholder="Name" id="auth-name"/>
+        </div>
+
+        <button className="auth__submit auth__bottom">Next</button>
+      </form>
     </div>
   );
 }

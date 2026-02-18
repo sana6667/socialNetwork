@@ -4,8 +4,8 @@
 //endregion
 
 //#region base
-@use './base/global';
 @use './base/normalise';
+@use './base/global';
 //endregion
 
 //#region components
@@ -15,3 +15,7 @@
 //#region pages
 @use './pages/auth/register.scss';
 //endregion
+
+html {
+  font-family: 'Inter', sans-serif;
+} 
