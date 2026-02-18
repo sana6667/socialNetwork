@@ -1,4 +1,4 @@
-name: Debug ALB
+name: Debug Monitoring
 on:
   workflow_dispatch:
     inputs:
@@ -35,11 +35,12 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
-    
+
       - name: Terraform setup
         uses: hashicorp/setup-terraform@v3
         with:
-            terraform_version: 1.14.4
+          terraform_version: 1.14.4
+
       - name: Terraform init
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform init
@@ -51,58 +52,51 @@ jobs:
           echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> "$GITHUB_OUTPUT"
 
       - name: Update kubeconfig
-        run: aws eks update-kubeconfig --region "${{ env.AWS_REGION }}" --name "${{ steps.out.outputs.CLUSTER_NAME }}"
+        run: aws eks update-kubeconfig \
+               --region "${{ env.AWS_REGION }}" \
+               --name "${{ steps.out.outputs.CLUSTER_NAME }}"
 
-      # ========== ГЛАВНОЕ ==========
+      # =========================================================
+      # ===============  DEBUG BLOCK START  ======================
+      # =========================================================
 
-      - name: Show ingress
-        run: kubectl get ingress -A
-      - name: Info endpoints
-        run: | 
-          kubectl -n default get endpoints backend-service -o wide
-          kubectl -n default describe endpoints backend-service
-      - name: Pod status
-        run: | 
-          kubectl -n default get pods -l app=backend -o wide
-          kubectl -n default describe pod -l app=backend
+      - name: 📌 Show namespaces
+        run: kubectl get ns || true
 
-      - name: Describe ingress backend
-        run: kubectl describe ingress backend -n default
+      - name: 📌 Show monitoring pods
+        run: kubectl get pods -n monitoring -o wide || true
 
-      - name: ALB controller logs
-        run: kubectl logs -n kube-system deployment/aws-load-balancer-controller | tail -n 200
+      - name: 📌 Show deployments in monitoring
+        run: kubectl get deploy -n monitoring -o wide || true
 
-      - name: Show services
-        run: kubectl get svc -n default -o wide
+      - name: 📌 Show statefulsets (Prometheus / Alertmanager)
+        run: kubectl get statefulset -n monitoring -o wide || true
 
-      - name: Helm repos and releases
+      - name: 📌 Show PVC
+        run: kubectl get pvc -n monitoring || true
+
+      - name: 📌 Describe problematic pods
         run: |
-          set -euo pipefail
-          helm repo list
-          helm list -A
-          kubectl -n kube-system get deploy,pods | grep -i alb || true
-          kubectl -n monitoring get deploy,sts,pods,svc 2>/dev/null || true
+          kubectl describe pods -n monitoring || true
 
-      - name: Show generated manifests (head)
+      - name: 📌 Logs Prometheus
         run: |
-          set -euo pipefail
-          ls -la "${{ env.K8S_OUT_DIR }}"
-          for f in secret-mssql.yaml job-ef.yaml deployment.yaml service.yaml ingress.yaml; do
-            echo "===== $f ====="
-            sed -n '1,60p' "${{ env.K8S_OUT_DIR }}/$f" || true
-            echo
-          done
-      - name: Check Secret mssql-conn
-        run: |
-          set -euo pipefail
-          kubectl get secret mssql-conn -n default -o yaml | sed -n '1,80p'
+          kubectl logs -n monitoring --tail=200 \
+            statefulset/monitoring-kube-prometheus-stack-prometheus 2>/dev/null || true
 
-      - name: Check CRDs and namespaces
+      - name: 📌 Logs Grafana
         run: |
-          set -euo pipefail
-          kubectl get ns
-          kubectl get crd | egrep 'servicemonitors|prometheuses|alertmanagers|targetgroupbindings' || true
-      - name: Check ALB Controller SA & IAM role annotation
-        run: |
-          set -euo pipefail
-          kubectl -n kube-system get sa aws-load-balancer-controller -o yaml | sed -n '1,120p'
+          kubectl logs -n monitoring deploy/monitoring-grafana 2>/dev/null || true
+
+      - name: 📌 Events in monitoring namespace
+        run: kubectl get events -n monitoring --sort-by=.metadata.creationTimestamp || true
+
+      - name: 📌 Check CRDs
+        run: kubectl get crd | grep -E 'promethe|monitor|alert' || true
+
+      - name: 📌 Helm releases
+        run: helm list -A || true
+
+      # =========================================================
+      # ===============  DEBUG BLOCK END  ========================
+      # =========================================================

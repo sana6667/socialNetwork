@@ -10,7 +10,8 @@ resource "aws_acm_certificate" "cert" {
     validation_method = "DNS"
     subject_alternative_names = [
         var.conf_cloudFron.sub_dns,
-        var.conf_cloudFron.sub_dns_alb
+        var.conf_cloudFron.sub_dns_alb,
+        var.conf_cloudFron.alb_monitoring_dns
     ]
 }
 
