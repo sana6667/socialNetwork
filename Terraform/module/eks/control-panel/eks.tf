@@ -7,6 +7,9 @@ resource "aws_eks_cluster" "eks_priv_endpoint" {
         endpoint_private_access = true
         endpoint_public_access = true
     }
+    access_config {
+      authentication_mode = "API_AND_CONFIG_MAP"
+    }
     
     depends_on = [ aws_iam_role_policy_attachment.cluster_policy ]
 }

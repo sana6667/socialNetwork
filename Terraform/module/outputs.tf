@@ -62,6 +62,11 @@ output "connection_string_rds" {
   value = module.rds.connection_string
 }
 
+output "cert_arn" {
+  description = "Multi cert dns"
+  value = module.cloudFront.cert_arn
+}
+
 
 
 # output "alb_controller_role" {
