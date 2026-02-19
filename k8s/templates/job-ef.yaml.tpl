@@ -7,18 +7,13 @@ spec:
   backoffLimit: 1
   template:
     spec:
+      restartPolicy: Never
       containers:
         - name: migrator
           image: ${ECR_URL}:migrator-latest
-          envFrom:
-            - secretRef:
-                name: mssql-conn
-
-          command: ["dotnet"]
-          args:
-            [
-              "ef", "database", "update",
-              "--project", "../SocialNetwork.Infrastructure",
-              "--startup-project", "."
-            ]
-      restartPolicy: Never
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-conn
+                  key: ConnectionStrings__DefaultConnection
