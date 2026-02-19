@@ -16,7 +16,7 @@ variable "conf_cloudFron" {
         dns_name = "soc-net.lat"
         cl_front_name = "cl-front-test"
         path_orig = "/static"
-        alb_monitoring_dns = "monitoring.soc-net.lat"
+        alb_monitoring_dns = "monitor.soc-net.lat"
     }
 }
 

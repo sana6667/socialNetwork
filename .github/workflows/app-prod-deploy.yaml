@@ -58,17 +58,17 @@ jobs:
             - name: docker build migrator database
               run: docker build -t migrator-db -f app/backend/SocialNetwork.Api/Dockerfile.migrator app
             - name: docker image tag backend
-              run: docker tag diplom-app:latest ${{ steps.tf_outputs.outputs.ECR_URL }}:latest
+              run: docker tag diplom-app:latest ${{ steps.tf_outputs.outputs.ECR_URL }}:backend-${{ github.sha }}
             - name: docker image tag migrator database
-              run: docker tag migrator-db ${{ steps.tf_outputs.outputs.ECR_URL }}:migrator-latest
+              run: docker tag migrator-db ${{ steps.tf_outputs.outputs.ECR_URL }}:migrator-${{ github.sha }}
             - name: ecr login
               run: | 
                 aws ecr get-login-password --region "${{ env.AWS_REGION }}" \
                   | docker login --username AWS --password-stdin "${{ steps.tf_outputs.outputs.ECR_ENDPOINT }}"
             - name: docker push image backend
-              run: docker push "${{ steps.tf_outputs.outputs.ECR_URL }}:latest"
+              run: docker push "${{ steps.tf_outputs.outputs.ECR_URL }}:backend-${{ github.sha }}"
             - name: docker push image migrator db
-              run: docker push "${{ steps.tf_outputs.outputs.ECR_URL }}:migrator-latest"
+              run: docker push "${{ steps.tf_outputs.outputs.ECR_URL }}:migrator-${{ github.sha }}"
             - name: Install envsubst & jq
               run: sudo apt-get update && sudo apt-get install -y gettext-base jq
             - name: Prepare k8s manifests (envsubst)
