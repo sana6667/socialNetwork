@@ -45,6 +45,7 @@ jobs:
               run: | 
                 echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> "$GITHUB_OUTPUT"
                 echo "VPC_ID=$(terraform output -raw vpc_id )" >> "$GITHUB_OUTPUT"
+                echo "CERT_ARN=$(terraform output -raw cert_arn)" >> "$GITHUB_OUTPUT"
             - name: Add repository monitoring
               run: |
                 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -62,6 +63,13 @@ jobs:
               run: |
                 sudo apt-get update && sudo apt-get install -y gettext-base
 
+            - name: out files
+              env:
+                GRAFANA_PASS: ${{ secrets.GRAFANA_PASS }}
+              run: |
+                export GRAFANA_PASS
+                envsubst < "helm_values/templates/monitoring-values.yaml.tpl" \
+                > "helm_values/out/monitoring-values.yaml"
 
             - name: Install monitoring
               env:
@@ -70,9 +78,12 @@ jobs:
               run: |
                 helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
                   -n monitoring --create-namespace \
-                  -f helm_values/monitoring-values.yaml
+                  -f helm_values/out/monitoring-values.yaml
             - name: Prepare monitoring ingress
+              env:
+                CERT_ARN: ${{ steps.tf-output.outputs.CERT_ARN }}
               run: |
+                export CERT_ARN
                 envsubst < "${{ env.K8S_TPL_DIR }}/monitoring-ingress.yaml.tpl" \
                 > "${{ env.K8S_OUT_DIR }}/monitoring-ingress.yaml"
             

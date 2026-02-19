@@ -1,5 +1,5 @@
 grafana:
-  adminPassword: "admin1234"  # лучше вынести в секреты GitHub
+  adminPassword: ${GRAFANA_PASS}  # лучше вынести в секреты GitHub
   service:
     type: ClusterIP
     port: 80

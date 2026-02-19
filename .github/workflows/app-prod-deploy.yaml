@@ -52,6 +52,7 @@ jobs:
                 echo "DB_HOST=$(terraform output -raw rds_endpoint)" >> "$GITHUB_OUTPUT"
                 echo "DB_PORT=$(terraform output -raw rds_port)" >> "$GITHUB_OUTPUT"
                 echo "ECR_ENDPOINT=$(terraform output -raw ecr_endpoint)" >> "$GITHUB_OUTPUT"
+                echo "CERT_ARN=$(terraform output -raw cert_arn)" >> "$GITHUB_OUTPUT"
             - name: docker build socialnetwork site backend
               run: docker build -t diplom-app -f app/backend/SocialNetwork.Api/Dockerfile app
             - name: docker build migrator database
@@ -79,8 +80,9 @@ jobs:
                 DB_NAME: ${{ secrets.DB_NAME }}
                 DB_USER: ${{ secrets.DB_USER }}
                 DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+                CERT_ARN: ${{ steps.tf_outputs.outputs.CERT_ARN}}
               run: | 
-                export CLUSTER_NAME ECR_URL DB_HOST DB_NAME DB_USER DB_PASSWORD DB_PORT
+                export CLUSTER_NAME ECR_URL DB_HOST DB_NAME DB_USER DB_PASSWORD DB_PORT CERT_ARN
                 envsubst < "${{ env.K8S_TPL_DIR }}/job-ef.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/job-ef.yaml"
                 envsubst < "${{ env.K8S_TPL_DIR }}/deployment.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/deployment.yaml"
                 envsubst < "${{ env.K8S_TPL_DIR }}/service.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/service.yaml"
