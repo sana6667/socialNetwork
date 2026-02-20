@@ -1,48 +1,23 @@
-import { Link } from "react-router-dom";
-
 type Step1Props = {
   onNext: () => void;
 };
 
-export const Step1 = ({ onNext }: Step1Props) => {
+export const Step1 = (props: Step1Props) => {
+  const { onNext } = props;
   return (
     <div className="auth__container">
-      <h1 className="auth__title">
-        Hey,
-        welcome ....
+      <a onClick={() => window.history.back()} className="auth__back"><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
+      <progress className="auth__progress" value={1} max={4}></progress>
+      <h1 className="auth__page__title">
+        What’s your name?
       </h1>
       <form action="" className="auth__form" onSubmit={onNext}>
         <div className="auth__input__container">
-          <p className="auth__input__title">
-            Email
-          </p>
-          <input type="email" className="auth__input__field" placeholder="Enter your email or number" id="auth-email"/>
-        </div>
-        <div className="auth__input__container">
-          <p className="auth__input__title">
-            Password
-          </p>
-          <input type="password" className="auth__input__field" placeholder="Enter your password" id="auth-password"/>
-          <Link className="auth__input__link" to="/reset">Forgot your password?</Link>
+          <input type="text" className="auth__input__field" placeholder="Name" id="auth-name"/>
         </div>
 
-        <button className="auth__submit">Sign in</button>
+        <button className="auth__submit auth__bottom">Next</button>
       </form>
-
-      <p className="auth__text">
-        or continue with
-      </p>
-
-      <div className="auth__socials">
-        
-        <a href="" className="auth__link"><img src="/imgs/Google.svg" alt="Google" className="auth__link__img" /></a>
-        <a href="" className="auth__link"><img src="/imgs/Facebook.svg" alt="Facebook" className="auth__link__img" /></a>
-        <a href="" className="auth__link"><img src="/imgs/Apple.svg" alt="Apple" className="auth__link__img" /></a>
-      </div>
-
-      <footer className="auth__footer">
-        Don't have an account? <Link className="auth__footer__link" to="/register">Sign up</Link>
-      </footer>
     </div>
   );
 }

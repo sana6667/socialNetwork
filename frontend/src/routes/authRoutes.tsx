@@ -1,6 +1,7 @@
 // src/routes/auth.routes.tsx
 import { type RouteObject } from 'react-router-dom';
 import { Register } from '../pages/Auth/Register';
+import { Login } from '../pages/Auth/Login';
 
 export const authRoutes: RouteObject[] = [
   {
@@ -9,7 +10,7 @@ export const authRoutes: RouteObject[] = [
   },
   {
     path: '/login',
-    element: <h1>Login Page</h1>, // time constraints, so just a placeholder
+    element: <Login />,
   },
   {
     path: '/reset',

@@ -112,6 +112,9 @@
     &__back {
       display: flex;
       align-items: center;
+      text-decoration: none;
+      cursor: pointer;
+      color: $authColor;
     }
 
     &__progress {
