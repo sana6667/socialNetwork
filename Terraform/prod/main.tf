@@ -6,6 +6,13 @@ terraform {
         }
 
     }
+    backend "s3" {
+        bucket = "cdn-buck-sana-556-ss"
+        encrypt = true
+        region = "us-east-1"
+        dynamodb_endpoint = "terraform-up-and-running-locks"
+        key = "global/s3/terraform.tfstate"
+    }
 }
 
 provider "aws" {
@@ -18,6 +25,10 @@ module "iam_roles" {
 
 module "terr_state_s3" {
     source = "../module/s3-tf-backend"
+}
+
+module "ecr" {
+    source = "../module/ecr"
 }
 
 output "tf_s3_arn" {

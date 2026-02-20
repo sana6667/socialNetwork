@@ -1,0 +1,36 @@
+name: Final testing terraform + S3
+on:
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+jobs:
+    job_vpc:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v4
+
+            - name: Setup terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: 1.14.4
+
+            - name: Aws credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+                aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Terraform init
+              working-directory: Terraform/prod
+              run: terraform init
+
+            - name: Terraform apply
+              working-directory: Terraform/prod
+              run: terraform apply -auto-approve
+
+        

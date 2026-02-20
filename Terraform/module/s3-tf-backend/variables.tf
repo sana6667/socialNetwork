@@ -3,6 +3,6 @@ variable "conf_s3" {
       backet_name = string
     })
     default = {
-        backet_name = "cdn-buck"
+        backet_name = "cdn-buck-sana-556-ss"
     }
 }
