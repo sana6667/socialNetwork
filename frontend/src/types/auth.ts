@@ -16,3 +16,11 @@ export type AuthResponse = {
     email: string;
   };
 };
+
+
+export type RegisterData = {
+  name: string;
+  city: string;
+  intrests: string[];
+  photo: File | null;
+};

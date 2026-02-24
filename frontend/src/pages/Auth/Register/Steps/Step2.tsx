@@ -9,7 +9,7 @@ export const Step2 = (props: Step2Props) => {
   return (
     <div className="auth__container">
       <a className="auth__back" onClick={onBack}><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
-      <progress className="auth__progress" value={2} max={4}></progress>
+      <progress className="auth__progress" value={2} max={6}></progress>
       <h1 className="auth__page__title">
         Which city do you live in?
       </h1>

@@ -55,7 +55,7 @@ export const Step3 = (props: Step3Props) => {
   return (
     <div className="auth__container">
       <a className="auth__back" onClick={onBack}><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
-      <progress className="auth__progress" value={3} max={4}></progress>
+      <progress className="auth__progress" value={3} max={6}></progress>
       <h1 className="auth__page__title">
         What your interest?
       </h1>

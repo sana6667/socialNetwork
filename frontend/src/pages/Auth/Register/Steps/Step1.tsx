@@ -7,7 +7,7 @@ export const Step1 = (props: Step1Props) => {
   return (
     <div className="auth__container">
       <a onClick={() => window.history.back()} className="auth__back"><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
-      <progress className="auth__progress" value={1} max={4}></progress>
+      <progress className="auth__progress" value={1} max={6}></progress>
       <h1 className="auth__page__title">
         What’s your name?
       </h1>
