@@ -1,4 +1,4 @@
-const BASE_URL = 'https://localhost:7019';
+export const BASE_URL = 'https://localhost:7019';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 

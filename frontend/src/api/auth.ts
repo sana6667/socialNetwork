@@ -1,6 +1,5 @@
 import { request } from './fetchClent';
 import type { LoginRequest, RegisterRequest, AuthResponse } from '../types/auth'
-// Real API calls would look something like this:
 
 export function login(data: LoginRequest) {
   return request<AuthResponse>(
@@ -10,7 +9,7 @@ export function login(data: LoginRequest) {
   );
 }
 
-export function realRegister(data: RegisterRequest) {
+export function register(data: RegisterRequest) {
   return request<AuthResponse>(
     '/api/user/register',
     'POST',

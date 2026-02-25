@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import type { RegisterData } from '../../../../types/auth';
 
 type Step3Props = {
   onNext: () => void;
   onBack: () => void;
+  onChange: (data: Partial<RegisterData>) => void;
 };
 
 type Interest = {
@@ -12,7 +14,7 @@ type Interest = {
 };
 
 export const Step3 = (props: Step3Props) => {
-  const { onNext, onBack } = props;
+  const { onNext, onBack, onChange } = props;
   
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
@@ -41,14 +43,11 @@ export const Step3 = (props: Step3Props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    console.log('Selected interests:', selectedInterests);
-    
     if (selectedInterests.length === 0) {
       alert('Please select at least one interest');
       return;
     }
-    
+    onChange({ intrestsId: selectedInterests });
     onNext();
   };
 

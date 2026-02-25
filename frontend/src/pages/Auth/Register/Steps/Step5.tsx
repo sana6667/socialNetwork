@@ -1,32 +1,49 @@
+import { useState } from "react";
+import type { RegisterData } from "../../../../types/auth";
+
 type Step5Props = {
   onNext: () => void;
   onBack: () => void;
+  onChange: (data: Partial<RegisterData>) => void;
 };
 
 
 export const Step5 = (props: Step5Props) => {
-  const { onNext, onBack } = props;
+  const { onNext, onBack, onChange } = props;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleAllow = () => {
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        onChange({
+          geolocation: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          }
+        });
+        setLoading(false);
+        onNext();
+      },
+      () => {
+        setError('Could not get location. Please allow access.');
+        setLoading(false);
+      }
+    );
+  };
   return (
     <div className="auth__container">
       <a className="auth__back" onClick={onBack}><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
       <progress className="auth__progress" value={5} max={6}></progress>
-      <h1 className="auth__page__title">
-        Add your photo to profile
-      </h1>
-      <p className="auth__subtitle">
-        Your photos helps other people see who you are and feel more comfortable starting a conversation 
-      </p>
-      <form action="" className="auth__form__photo" onSubmit={onNext}>
-        <img className="auth__photo" src="/imgs/Group 142.svg" alt="Photo" /> 
+      <h1 className="auth__page__title">You're almost there!</h1>
+      <p>We've found 1,459 people with similar interests who are looking for a place to stay.</p>
 
-        <button className="auth__addPhoto">Add Photo</button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        <button className="auth__submit auth__bottom">Next</button>
-      </form>
-
-      <p className="auth__subtitle">
-        Choose a pictures where your face is well-lit and easy to see, without sunglasses or anything covering it. Make sure it’s just you in the photo.
-      </p>
+      <button onClick={handleAllow} disabled={loading}>
+        {loading ? 'Getting location...' : 'Next'}
+      </button>
     </div>
   );
 }
