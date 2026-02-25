@@ -41,7 +41,7 @@ export const Step5 = (props: Step5Props) => {
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <button onClick={handleAllow} disabled={loading}>
+      <button onClick={handleAllow} disabled={loading} className="auth__submit auth__bottom">
         {loading ? 'Getting location...' : 'Next'}
       </button>
     </div>

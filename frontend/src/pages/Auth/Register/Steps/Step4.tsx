@@ -35,6 +35,7 @@ export const Step4 = (props: Step4Props) => {
                 type="radio"
                 name="lookingFor"
                 value={option}
+                className="auth__radio_check"
                 checked={selected === option}
                 onChange={() => setSelected(option)}
               />

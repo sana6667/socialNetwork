@@ -158,7 +158,7 @@
     }
   // #endregion
 
-  //#regin step4
+  //#region step3
 
     &__interests__grid {
       display: flex;
@@ -189,7 +189,25 @@
     }
   //#endregion
 
-  //#region step5
+  //#region step4
+    &__radio {
+        &__list {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      &__item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 12px;
+        border: 1px solid #333333;
+      }
+    }
+  //#endregion
+
+  //#region step6
     &__form__photo {
       display: flex;
       flex-direction: column;
