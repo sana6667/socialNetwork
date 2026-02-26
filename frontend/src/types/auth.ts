@@ -10,7 +10,7 @@ export type RegisterRequest = {
   city: string;
   intrestsId: string[];
   lookingFor: string;
-  geolocation: Geolocation | null;
+  geolocation: Geolocation | null; //null если пользователь не предоставил геолокацию
 };
 
 export type AuthResponse = {
@@ -28,7 +28,7 @@ export type RegisterData = {
   name: string;
   city: string;
   intrestsId: string[];
-  geolocation: Geolocation | null;
+  geolocation: Geolocation | null; //null если пользователь не предоставил геолокацию
   lookingFor: string;
   photo: File | null;
 };

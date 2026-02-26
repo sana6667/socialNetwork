@@ -9,11 +9,13 @@
 //endregion
 
 //#region components
-@use './components/buttons.scss';
+@use './components/cardItem.scss';
+@use './components/navbar.scss';
 //endregion
 
 //#region pages
 @use './pages/auth/register.scss';
+@use './pages/main/mainpage.scss';
 //endregion
 
 html {
