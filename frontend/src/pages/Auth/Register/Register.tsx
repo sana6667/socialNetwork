@@ -8,11 +8,13 @@ import { Step5 } from "./Steps/Step5";
 import { Step6 } from "./Steps/Step6";
 import { BASE_URL } from "../../../api/fetchClent";
 import { register } from "../../../api/auth";
+import { useNavigate } from "react-router-dom";
 import type { RegisterData, RegisterRequest } from "../../../types/auth";
 //#endregion
 
 export const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const navigate = useNavigate();
   const [registerData, setRegisterData] = useState<RegisterData>({
     email: 'smth@gmail.com', //TODO: delete default email and password
     password: '123321@OADas', //TODO: delete default email and password
@@ -53,6 +55,8 @@ const handleFinish = async () => {
       body: formData,
     });
   }
+
+  navigate('/mainpage');
 };
 
   const renderStep = () => {
