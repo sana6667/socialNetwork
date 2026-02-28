@@ -96,11 +96,11 @@ public class MatchService : IMatchService
         for (int i = 0; i < pinCount; i++)
         {
             var u = rng.NextDouble();
-            var r = Math.Sqrt(u)*(maxR - minR);
+            var r = Math.Sqrt(u)*(maxR - minR)+minR;
             var angle = rng.NextDouble() * 2.0 * Math.PI;
             
             var dLat=(r*Math.Cos(angle))/111_320.0;
-            var dLng=(r*Math.Sin(angle))/(111_320.0*Math.Cos(centerLat*Math.PI/180.0)*180.0);
+            var dLng=(r*Math.Sin(angle))/(111_320.0*Math.Cos(centerLat*Math.PI/180.0));
 
             var lat = Math.Round(centerLat + dLat, 3);
             var lng = Math.Round(centerLng + dLng, 3);
