@@ -147,6 +147,9 @@ public class UserController :ControllerBase
         {
             return Unauthorized("Invalid credentials");
         }
+        
+        user.LastActiveAt = DateTime.UtcNow;
+        await _userManager.UpdateAsync(user);
 
         var roles = await _userManager.GetRolesAsync(user);
         
@@ -278,6 +281,38 @@ public class UserController :ControllerBase
         await _userManager.UpdateAsync(user);
         return Ok(url);
     }
+
+
+    [HttpPut("location")]
+    public async Task<IActionResult> UpdateLocation(double lat, double lon, CancellationToken ct)
+    {
+        if (lat is < -90 or > 90 || lon is < -180 or > 180)
+        {
+            return BadRequest("Invalid coordinates");
+        }
+        
+        
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return Unauthorized();
+        }
+
+        var latR = Math.Round(lat, 2);
+        var lonR = Math.Round(lon, 2);
+        
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
+        user.LatRounded = latR;
+        user.LngRounded = lonR;
+        user.LocationUpdatedAt = DateTime.UtcNow;
+        user.LastActiveAt = DateTime.UtcNow;
+        
+        await _dbContext.SaveChangesAsync(ct);
+        return Ok(new { lat = latR, lon = lonR });
+    }
+    
+    
+    
 
     // [Authorize]
     // [HttpPost("set-interests")]
