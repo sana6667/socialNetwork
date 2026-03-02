@@ -32,7 +32,7 @@ jobs:
                 aws-region: ${{ env.AWS_REGION }}
 
             - name: Terrafrom outputs
-              working-directory: Terraform/module
+              working-directory: ${{ env.TF_WORKING_DIR }}
               id: tf-output
               run: | 
                 echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> "$GITHUB_OUTPUT"
