@@ -46,26 +46,72 @@ resource "aws_cloudfront_distribution" "cdn" {
     #depends_on = [ aws_s3_bucket_public_access_block.block_s3_cdn ]
 }
 
-data "aws_iam_policy_document" "cdn_bucket_policy" {
-    statement {
-        actions = ["s3:GetObject"]
-        resources = ["${var.s3_cdn_import.s3_arn_value}/*"]
-        sid = "AllowCloudFrontReadOnlyFromThisDistribution"
-        principals {
-            type = "Service"
-            identifiers = ["cloudfront.amazonaws.com"]
-        }
+#data "aws_iam_policy_document" "cdn_bucket_policy" {
+ #   statement {
+  #      actions = ["s3:GetObject"]
+   #     resources = ["${var.s3_cdn_import.s3_arn_value}/*"]
+    #    sid = "AllowCloudFrontReadOnlyFromThisDistribution"
+     #   principals {
+      #      type = "Service"
+       #     identifiers = ["cloudfront.amazonaws.com"]
+       # }
         
-        condition {
-            test = "StringEquals" #было StringLike
-            variable = "AWS:SourceArn"
-            values = [ aws_cloudfront_distribution.cdn.arn ]
-        }
+      #  condition {
+       #     test = "StringEquals" #было StringLike
+        #    variable = "AWS:SourceArn"
+         #   values = [ aws_cloudfront_distribution.cdn.arn ]
+       # }
 
+   # }
+#}
+
+#resource "aws_s3_bucket_policy" "s3_cdn_policy" {
+ #   bucket = var.s3_cdn_import.s3_cdn_id_value
+  #  policy = data.aws_iam_policy_document.cdn_bucket_policy.json
+#}
+
+# === ВСТАВЬ НИЖЕ ЭТО ===
+
+# Политика бакета: доступ для OAC + (временно) для OAI
+data "aws_iam_policy_document" "cdn_bucket_policy" {
+  # Доступ для OAC (новый механизм)
+  statement {
+    sid       = "AllowCloudFrontOAC"
+    actions   = ["s3:GetObject"]
+    resources = ["${var.s3_cdn_import.s3_arn_value}/*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
+
+    # Привязка к конкретной дистрибуции
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [aws_cloudfront_distribution.cdn.arn]
+    }
+  }
+
+  # Доступ для OAI (временный, чтобы сейчас же убрать 404)
+  # Подставь твой OAI ID (из консоли у тебя E1WGZ7867NLL6L).
+  # Потом, когда убедимся, что CF реально ходит через OAC, этот блок можно удалить.
+  statement {
+    sid       = "AllowCloudFrontOAI"
+    actions   = ["s3:GetObject"]
+    resources = ["${var.s3_cdn_import.s3_arn_value}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1WGZ7867NLL6L"]
+    }
+  }
 }
 
 resource "aws_s3_bucket_policy" "s3_cdn_policy" {
-    bucket = var.s3_cdn_import.s3_cdn_id_value
-    policy = data.aws_iam_policy_document.cdn_bucket_policy.json
+  bucket = var.s3_cdn_import.s3_cdn_id_value
+  policy = data.aws_iam_policy_document.cdn_bucket_policy.json
+
+  # Обеспечим порядок: сначала создаётся/обновляется Distribution, потом политика
+  depends_on = [aws_cloudfront_distribution.cdn]
 }
