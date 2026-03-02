@@ -17,9 +17,6 @@ resource "aws_cloudfront_distribution" "cdn" {
         domain_name = var.s3_cdn_import.s3_cdn_name
         origin_id = "origin-cdn-s3"
         origin_access_control_id = aws_cloudfront_origin_access_control.cl_front.id
-        s3_origin_config { 
-            origin_access_identity = ""
-        }
     }
     default_cache_behavior {
         target_origin_id = "origin-cdn-s3"
