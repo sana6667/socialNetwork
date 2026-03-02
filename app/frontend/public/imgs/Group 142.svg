@@ -1,0 +1,5 @@
+<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 72C0 32.2355 32.2355 0 72 0C111.764 0 144 32.2355 144 72C144 111.764 111.764 144 72 144C32.2355 144 0 111.764 0 72Z" fill="#D9D9D9"/>
+<path d="M144 129C144 137.284 137.284 144 129 144C120.716 144 114 137.284 114 129C114 120.716 120.716 114 129 114C137.284 114 144 120.716 144 129Z" fill="#333333"/>
+<path d="M119 129H129M129 129H139M129 129V139M129 129V119" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

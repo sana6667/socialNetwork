@@ -1,0 +1,35 @@
+// Breakpoints
+$sm: 480px;
+$md: 768px;
+$lg: 1024px;
+$xl: 1280px;
+
+// Mobile first — от маленького к большому
+@mixin sm {
+  @media (min-width: $sm) { @content; }
+}
+
+@mixin md {
+  @media (min-width: $md) { @content; }
+}
+
+@mixin lg {
+  @media (min-width: $lg) { @content; }
+}
+
+@mixin xl {
+  @media (min-width: $xl) { @content; }
+}
+
+@mixin text($size: 12px, $line-height: normal, $weight: 400, $letter-spacing: normal) {
+  font-size: $size;
+  line-height: $line-height;
+  font-weight: $weight;
+  letter-spacing: $letter-spacing;
+}
+
+@mixin container ($padding-left: 16px, $padding-right: 16px) {
+  padding-left: $padding-left;
+  padding-right: $padding-right;
+
+}

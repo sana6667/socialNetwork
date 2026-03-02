@@ -1,0 +1,23 @@
+//#region abstracts
+@use './abstracts/variables';
+@use './abstracts/mixins';
+//endregion
+
+//#region base
+@use './base/normalise';
+@use './base/global';
+//endregion
+
+//#region components
+@use './components/cardItem.scss';
+@use './components/navbar.scss';
+//endregion
+
+//#region pages
+@use './pages/auth/register.scss';
+@use './pages/main/mainpage.scss';
+//endregion
+
+html {
+  font-family: 'Inter', sans-serif;
+} 
