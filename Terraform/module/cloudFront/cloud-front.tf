@@ -15,7 +15,7 @@ resource "aws_cloudfront_distribution" "cdn" {
     default_root_object = "index.html"
     origin {
         domain_name = var.s3_cdn_import.s3_cdn_name
-        origin_id = "origin-cdn-s3-v2"   # временно
+        origin_id = "origin-cdn-s3"   
         origin_access_control_id = aws_cloudfront_origin_access_control.cl_front.id
     }
     default_cache_behavior {
