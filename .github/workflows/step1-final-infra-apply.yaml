@@ -1,4 +1,4 @@
-name: Final testing terraform + S3
+name: Final testing terraform + S3 STEP_1
 on:
     workflow_dispatch:
 

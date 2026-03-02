@@ -1,4 +1,4 @@
-name: Alb controller install
+name: Alb controller install STEP_3
 
 on:
     workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-              
+
             - name: Terraform install
               uses: hashicorp/setup-terraform@v3
               with:

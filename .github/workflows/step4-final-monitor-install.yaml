@@ -1,4 +1,4 @@
-name: Monitoring promethus and grafana install
+name: Monitoring promethus and grafana install STEP_4
 on:
     workflow_dispatch:
 

@@ -1,4 +1,4 @@
-name: Deploy app prodactions step 2
+name: Deploy app prodactions STEP_2
 
 on:
     workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-              
+
             - name: Terraform setup
               uses: hashicorp/setup-terraform@v3
               with:
