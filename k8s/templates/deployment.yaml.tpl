@@ -31,14 +31,14 @@ spec:
                   name: mssql-conn
                   key: ConnectionStrings__DefaultConnection
           readinessProbe:
-            httpGet: { path: /, port: 80 }
+            httpGet: { path: /api/health, port: 80 }
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 6
 
           livenessProbe:
-            httpGet: { path: /, port: 80 }
+            httpGet: { path: /api/health, port: 80 }
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 3

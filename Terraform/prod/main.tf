@@ -7,11 +7,11 @@ terraform {
 
     }
     backend "s3" {
-        bucket = "cdn-buck-sana-556-ss"
-        key = "global/s3/terraform.tfstate"
-        region = "us-east-1"
-        dynamodb_table = "terraform-up-and-running-locks"
-        encrypt = true
+      bucket = "cdn-buck-sana-556-ss"
+      key = "global/s3/terraform.tfstate"
+      region = "us-east-1"
+      dynamodb_endpoint = "terraform-up-and-running-locks"
+      encrypt = true
     }
 }
 
