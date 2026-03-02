@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ${ECR_URL}:backend-${{ github.sha }}
+          image: ${ECR_URL}:backend-${IMAGE_TAG}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
