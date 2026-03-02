@@ -19,7 +19,7 @@ spec:
             - containerPort: 80
           env:
             - name: ASPNETCORE_ENVIRONMENT
-              value: "Development"
+              value: "Production"
             
             - name: ASPNETCORE_URLS    # Явно зафиксируем, чтобы не было споров
               value: "http://0.0.0.0:80"

@@ -1,0 +1,43 @@
+name: Push frontend S3
+
+on:
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+jobs:
+    frontend:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Build frontent
+              working-directory: app/frontend
+              run: |
+                npm install
+                npm run build
+            - name: Terraform install
+              uses: hashicorp/setup-terraform@v3
+              with:
+                version-terraform: 1.14.4
+            - name: Aws credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+                aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Tf outputs
+              id: tf-output
+              working-directory: Terraform/prod
+              run: | 
+                echo "bucket=$(terraform output -raw tf_s3_name)" >> $GITHUB_OUTPUT
+
+            - name: Download frontend S3
+              run: | 
+                aws s3 sync app/frontend/dist s3://${{ steps.tf-output.outputs.bucket }}
+
+
+            
+        
+
