@@ -77,7 +77,7 @@ jobs:
                 DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
                 CERT_ARN: ${{ steps.tf_outputs.outputs.CERT_ARN}}
               run: | 
-                export CLUSTER_NAME ECR_URL DB_HOST DB_NAME DB_USER DB_PASSWORD DB_PORT CERT_ARN
+                export CLUSTER_NAME ECR_URL DB_HOST DB_NAME DB_USER DB_PASSWORD DB_PORT CERT_ARN IMAGE_TAG
                 envsubst < "${{ env.K8S_TPL_DIR }}/job-ef.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/job-ef.yaml"
                 envsubst < "${{ env.K8S_TPL_DIR }}/deployment.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/deployment.yaml"
                 envsubst < "${{ env.K8S_TPL_DIR }}/service.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/service.yaml"

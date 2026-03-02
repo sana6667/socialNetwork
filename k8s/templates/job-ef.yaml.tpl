@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: migrator
-          image: ${ECR_URL}:migrator-${{ github.sha }}
+          image: ${ECR_URL}:migrator-${IMAGE_TAG}
           env:
             - name: ConnectionStrings__DefaultConnection
               valueFrom:
