@@ -49,12 +49,16 @@ module "cloudFront" {
     s3_cdn_import = module.s3_cdn.s3_cdn_export
 }
 
-# module "policy" {
-#     source = "./iam-roles"
-# }
+module "policy" {
+    source = "../module/iam-roles"
+}
 
 module "ecr" {
     source = "../module/ecr"
+}
+
+module "terr_state_s3" {
+    source = "../module/s3-tf-backend"
 }
 
 module "oidc_eks" {
