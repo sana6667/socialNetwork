@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "cdn_bucket_policy" {
         }
         
         condition {
-            test = "StringLike"
+            test = "StringEquals" #было StringLike
             variable = "AWS:SourceArn"
             values = [ aws_cloudfront_distribution.cdn.arn ]
         }
