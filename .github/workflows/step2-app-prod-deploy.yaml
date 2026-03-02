@@ -1,0 +1,121 @@
+name: Deploy app prodactions step 2
+
+on:
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+    contents: read
+    actions: read
+
+env:
+    TF_WORKING_DIR: Terraform/prod
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+    IMAGE_TAG: ${{ github.sha }}
+    K8S_TPL_DIR: k8s/templates
+    K8S_OUT_DIR: k8s/out
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              
+            - name: Terraform setup
+              uses: hashicorp/setup-terraform@v3
+              with:
+                version-terraform: 1.14.4
+
+            - name: Aws credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: ${{ secrets.AWS_TERRAFORM_ROLE }}
+                aws-region: ${{ env.AWS_REGION }}
+
+            - name: Terraform init
+              working-directory: ${{ env.TF_WORKING_DIR }}
+              run: |
+                terraform init
+
+            - name: Terraform outputs
+              id: tf_outputs
+              working-directory: ${{ env.TF_WORKING_DIR }}
+              run: | 
+                echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> "$GITHUB_OUTPUT"
+                echo "ECR_URL=$(terraform output -raw ecr_url)" >> "$GITHUB_OUTPUT"
+                echo "DB_HOST=$(terraform output -raw rds_endpoint)" >> "$GITHUB_OUTPUT"
+                echo "DB_PORT=$(terraform output -raw rds_port)" >> "$GITHUB_OUTPUT"
+                echo "ECR_ENDPOINT=$(terraform output -raw ecr_endpoint)" >> "$GITHUB_OUTPUT"
+                echo "CERT_ARN=$(terraform output -raw cert_arn)" >> "$GITHUB_OUTPUT"
+            - name: docker build socialnetwork site backend
+              run: docker build -t diplom-app -f app/backend/SocialNetwork.Api/Dockerfile app
+            - name: docker build migrator database
+              run: docker build -t migrator-db -f app/backend/SocialNetwork.Api/Dockerfile.migrator app
+            - name: docker image tag backend
+              run: docker tag diplom-app:latest ${{ steps.tf_outputs.outputs.ECR_URL }}:backend-${{ github.sha }}
+            - name: docker image tag migrator database
+              run: docker tag migrator-db ${{ steps.tf_outputs.outputs.ECR_URL }}:migrator-${{ github.sha }}
+            - name: ecr login
+              run: | 
+                aws ecr get-login-password --region "${{ env.AWS_REGION }}" \
+                  | docker login --username AWS --password-stdin "${{ steps.tf_outputs.outputs.ECR_ENDPOINT }}"
+            - name: docker push image backend
+              run: docker push "${{ steps.tf_outputs.outputs.ECR_URL }}:backend-${{ github.sha }}"
+            - name: docker push image migrator db
+              run: docker push "${{ steps.tf_outputs.outputs.ECR_URL }}:migrator-${{ github.sha }}"
+            - name: Install envsubst & jq
+              run: sudo apt-get update && sudo apt-get install -y gettext-base jq
+            - name: Prepare k8s manifests (envsubst)
+              env:
+                CLUSTER_NAME: ${{ steps.tf_outputs.outputs.CLUSTER_NAME }}
+                ECR_URL: ${{ steps.tf_outputs.outputs.ECR_URL }}
+                DB_HOST: ${{ steps.tf_outputs.outputs.DB_HOST }}
+                DB_PORT: ${{ steps.tf_outputs.outputs.DB_PORT }}
+                DB_NAME: ${{ secrets.DB_NAME }}
+                DB_USER: ${{ secrets.DB_USER }}
+                DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+                CERT_ARN: ${{ steps.tf_outputs.outputs.CERT_ARN}}
+              run: | 
+                export CLUSTER_NAME ECR_URL DB_HOST DB_NAME DB_USER DB_PASSWORD DB_PORT CERT_ARN
+                envsubst < "${{ env.K8S_TPL_DIR }}/job-ef.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/job-ef.yaml"
+                envsubst < "${{ env.K8S_TPL_DIR }}/deployment.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/deployment.yaml"
+                envsubst < "${{ env.K8S_TPL_DIR }}/service.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/service.yaml"
+                envsubst < "${{ env.K8S_TPL_DIR }}/ingress.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/ingress.yaml"
+                envsubst < "${{ env.K8S_TPL_DIR }}/secret-mssql.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/secret-mssql.yaml"
+            - name: Who am I
+              run: aws sts get-caller-identity
+
+            - name: Sanity check EKS
+              run: |
+                echo "REGION=${AWS_REGION}"
+                echo "${{ steps.tf_outputs.outputs.CLUSTER_NAME }}"
+                aws eks list-clusters --region "${AWS_REGION}"
+
+            - name: Describe cluster directly
+              env:
+                CLUSTER_NAME: ${{ steps.tf_outputs.outputs.CLUSTER_NAME }}
+              run: |
+                export CLUSTER_NAME
+                aws eks describe-cluster --region "${{ env.AWS_REGION }}" --name "${CLUSTER_NAME}"
+            - name: update kubeconfig
+              run: aws eks update-kubeconfig --region "${{ env.AWS_REGION }}" --name "${{ steps.tf_outputs.outputs.CLUSTER_NAME }}"
+
+            
+            - name: Apply k8s manifest - secret
+              run: |
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/secret-mssql.yaml"
+
+            - name: Apply manifest migrator db
+              run: |
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/job-ef.yaml"
+                kubectl wait --for=condition=complete --timeout=300s job/ef-migrations
+
+
+            - name: Apply k8s manifest
+              run: | 
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/service.yaml"
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/deployment.yaml"
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/ingress.yaml"
+                kubectl rollout status deploy/backend-deploy -n default --timeout=180s
+            
