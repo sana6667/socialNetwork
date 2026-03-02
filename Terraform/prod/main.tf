@@ -12,16 +12,56 @@ provider "aws" {
     region = "us-east-1"
 }
 
-module "iam_roles" {
-    source = "../module/iam-roles"
+module "network" {
+    source = "../module/eks/data-panel/networks"
 }
 
-module "terr_state_s3" {
-    source = "../module/s3-tf-backend"
+
+module "bastion" {
+    source = "../module/bastion"
+    pub_sub_bastion = module.network.subnet_id_bastion
+    conf_net_export = module.network.network_conf_export
 }
+
+module "eks_cluster" {
+    source = "../module/eks/control-panel"
+    config_network_import = module.network.network_conf_export
+    config_node_gr_value = module.workers_node.nodes_role_arn
+}
+
+module "workers_node" {
+    source = "../module/eks/data-panel/workerNodes"
+    conf_eks_import = module.eks_cluster.conf_eks_export
+    conf_network_import = module.network.network_conf_export
+}
+
+module "rds" {
+    source = "../module/rds"
+    conf_network_import = module.network.network_conf_export
+}
+
+module "s3_cdn" {
+    source = "../module/s3-cdn"
+}
+
+module "cloudFront" {
+    source = "../module/cloudFront"
+    s3_cdn_import = module.s3_cdn.s3_cdn_export
+}
+
+# module "policy" {
+#     source = "./iam-roles"
+# }
 
 module "ecr" {
     source = "../module/ecr"
+}
+
+module "oidc_eks" {
+    source = "../module/oidc-alb-controller"
+    cluster_name = module.eks_cluster.conf_eks_export
+    oidc_issued_url = module.eks_cluster.oidc_eks
+    depends_on = [ module.eks_cluster ]
 }
 
 output "tf_s3_arn" {
