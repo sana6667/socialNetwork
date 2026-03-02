@@ -5,7 +5,6 @@ variable "conf_cloudFron" {
       sub_dns_alb = string
       dns_name = string
       cl_front_name = string
-      path_orig = string
       alb_monitoring_dns = string
     })
 
@@ -15,7 +14,6 @@ variable "conf_cloudFron" {
         sub_dns = "app.soc-net.lat"
         dns_name = "soc-net.lat"
         cl_front_name = "cl-front-test"
-        path_orig = "/static"
         alb_monitoring_dns = "monitor.soc-net.lat"
     }
 }

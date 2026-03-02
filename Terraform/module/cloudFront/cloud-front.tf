@@ -20,7 +20,6 @@ resource "aws_cloudfront_distribution" "cdn" {
         s3_origin_config { 
             origin_access_identity = ""
         }
-        origin_path = var.conf_cloudFron.path_orig
     }
     default_cache_behavior {
         target_origin_id = "origin-cdn-s3"
