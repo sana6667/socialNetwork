@@ -31,6 +31,10 @@ jobs:
                 role-to-assume: ${{ env.AWS_TERRAFORM_ROLE }}
                 aws-region: ${{ env.AWS_REGION }}
 
+            - name: Terraform init
+              working-directory: ${{ env.TF_WORKING_DIR }}
+              run: terraform init
+
             - name: Terrafrom outputs
               working-directory: ${{ env.TF_WORKING_DIR }}
               id: tf-output
