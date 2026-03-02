@@ -66,3 +66,8 @@ output "cert_arn" {
   description = "Multi cert dns"
   value = module.cloudFront.cert_arn
 }
+
+output "tf_s3_cdn_bucket" {
+    description = "Cdn s3 name"
+    value = module.s3_cdn.tf_s3_cdn_bucket
+}

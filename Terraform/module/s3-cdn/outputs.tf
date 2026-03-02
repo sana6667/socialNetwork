@@ -5,3 +5,7 @@ output "s3_cdn_export" {
         s3_arn_value = aws_s3_bucket.s3_cdn.arn
     }
 }
+
+output "tf_s3_cdn_bucket" {
+    value = aws_s3_bucket.s3_cdn.bucket
+}
