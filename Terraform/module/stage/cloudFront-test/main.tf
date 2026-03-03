@@ -26,7 +26,7 @@ module "cdn_test" {
         sub_dns = "app.soc-net.lat"
         dns_name = "soc-net.lat"
         cl_front_name = "cl-front-test"
-        path_orig = "/static"
+        alb_monitoring_dns = "monitor.soc-net.lat"
     }
     s3_cdn_import = module.s3_cdn.s3_cdn_export
 }

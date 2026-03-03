@@ -42,6 +42,17 @@ resource "aws_cloudfront_distribution" "cdn" {
         ssl_support_method = "sni-only"
         minimum_protocol_version = "TLSv1.2_2021"
     }
+    custom_error_response {
+      error_code = 404
+      response_code = 200
+      response_page_path = "/index.html"
+    }
+
+    custom_error_response {
+      error_code = 403
+      response_code = 200
+      response_page_path = "/index.html"
+    }
     
     #depends_on = [ aws_s3_bucket_public_access_block.block_s3_cdn ]
 }
