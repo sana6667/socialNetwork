@@ -5,7 +5,7 @@ import { CardItem } from "../../../assets/CardItem";
 import { NavBar } from "../../../assets/NavBar";
 
 export function MainPage() {
-  const [contry, setCountry] = useState<string>('Berlin'); //test data
+  const [contry] = useState<string>('Berlin'); //test data
   const trevelers = 123; //test data
   const name = 'John'; //test data
   const range = '2km'; //test data
