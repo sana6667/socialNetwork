@@ -6,8 +6,8 @@ import { Step4 } from "./Steps/Step4";
 import { Step3 } from "./Steps/Step3";
 import { Step5 } from "./Steps/Step5";
 import { Step6 } from "./Steps/Step6";
+import { BASE_URL } from "../../../api/fetchClent";
 import { useNavigate } from "react-router-dom";
-
 import { register } from "../../../api/auth";
 import type { RegisterData } from "../../../types/auth";
 //#endregion
