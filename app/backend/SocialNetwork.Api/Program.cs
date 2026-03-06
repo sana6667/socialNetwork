@@ -139,10 +139,17 @@ app.UseStaticFiles();
 app.UseRouting();
 
 //CORS
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 
 // --- PROMETHEUS METRICS (до авторизации) ---
 //app.UseMetricServer();
