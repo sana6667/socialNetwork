@@ -22,4 +22,11 @@ WORKDIR /src/backend/SocialNetwork.Api
 #ENTRYPOINT ["/bin/sh","-lc","dotnet ef database update --project ../SocialNetwork.Infrastructure --startup-project ../SocialNetwork.Infrastructure --context ApplicationDbContext --no-build --verbose --connection \"$ConnectionStrings__DefaultConnection\""]
 
 
-ENTRYPOINT ["dotnet", "ef", "database", "update", "--project", "../SocialNetwork.Infrastructure", "--startup-project", "../SocialNetwork.Infrastructure"]
+#ENTRYPOINT ["dotnet", "ef", "database", "update", "--project", "../SocialNetwork.Infrastructure", "--startup-project", "../SocialNetwork.Infrastructure"]
+
+ENTRYPOINT ["/bin/sh","-c","dotnet ef database update \
+  --project ../SocialNetwork.Infrastructure \
+  --startup-project ../SocialNetwork.Infrastructure \
+  --context ApplicationDbContext \
+  --connection \"$ConnectionStrings__DefaultConnection\" \
+  --verbose"]
