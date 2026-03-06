@@ -22,6 +22,15 @@ var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
 
 
 
+// ---------- CORS (ПРАВИЛЬНОЕ МЕСТО — до Build()) ----------
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", p =>
+        p.AllowAnyOrigin()
+         .AllowAnyMethod()
+         .AllowAnyHeader());
+});
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -120,10 +129,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+
 
 
 
