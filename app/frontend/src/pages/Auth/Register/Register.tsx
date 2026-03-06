@@ -6,78 +6,94 @@ import { Step4 } from "./Steps/Step4";
 import { Step3 } from "./Steps/Step3";
 import { Step5 } from "./Steps/Step5";
 import { Step6 } from "./Steps/Step6";
-import { BASE_URL } from "../../../api/fetchClent";
-import { register } from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
-import type { RegisterData, RegisterRequest } from "../../../types/auth";
+
+import { register } from "../../../api/auth";
+import type { RegisterData } from "../../../types/auth";
 //#endregion
 
 export const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
+
   const [registerData, setRegisterData] = useState<RegisterData>({
-    email: 'smth@gmail.com', //TODO: delete default email and password
-    password: '123321@OADas', //TODO: delete default email and password
-    name: '',
-    city: '',
-    intrestsId: [],
-    lookingFor: '',
+    username: "smth@gmail.com",
+    password: "123321@OADas",
+    name: "",
+    city: "",
+    intrestsId: [],          // front stores strings, but backend expects numbers → FIXED BELOW
+    priorityIds: [],         // backend expects this field → ADDED
+    lookingFor: "",
     geolocation: null,
     photo: null,
   });
 
   const updateRegisterData = (data: Partial<RegisterData>) => {
-    setRegisterData(prev => ({ ...prev, ...data }));
-  }
-
-const handleFinish = async () => {
-  const data: RegisterRequest = {
-    email: registerData.email,
-    password: registerData.password,
-    name: registerData.name,
-    city: registerData.city,
-    intrestsId: registerData.intrestsId,
-    lookingFor: registerData.lookingFor,
-    geolocation: registerData.geolocation,
+    setRegisterData((prev) => ({ ...prev, ...data }));
   };
 
-  const response = await register(data);
+  const handleFinish = async () => {
+    // 🔥 BACKEND EXPECTS RegisterDto:
+    // { username, password, name, city, interestIds: number[], priorityIds: number[] }
 
-  if (registerData.photo) {
-    const formData = new FormData();
-    formData.append('photo', registerData.photo);
+    // Convert interests from strings → numeric IDs (example: "travel" → 1)
+    const convertInterest = (item: string) => {
+      const map: Record<string, number> = {
+        travel: 1,
+        cooking: 2,
+        sport: 3,
+      };
+      return map[item] ?? 0;
+    };
 
-    await fetch(`${BASE_URL}/api/user/${response.user.id}/photo`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${response.token}`,
-      },
-      body: formData,
-    });
-  }
+    const payload = {
+      username: registerData.username,
+      password: registerData.password,
+      name: registerData.name,
+      city: registerData.city,
 
-  navigate('/mainpage');
-};
+      // FIXED: correct name & convert to numbers
+      interestIds: registerData.intrestsId.map(convertInterest),
+
+      // FIXED: required by backend
+      priorityIds: registerData.priorityIds,
+    };
+
+    const response = await register(payload);
+
+    if (registerData.photo) {
+      const formData = new FormData();
+      formData.append("photo", registerData.photo);
+
+      await fetch(`${BASE_URL}/api/user/${response.user.id}/photo`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${response.token}`,
+        },
+        body: formData,
+      });
+    }
+
+    navigate("/mainpage");
+  };
 
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <Step1 onNext={() => setCurrentStep(2)} onChange={updateRegisterData}/>;
+        return <Step1 onNext={() => setCurrentStep(2)} onChange={updateRegisterData} />;
       case 2:
-        return <Step2 onNext={() => setCurrentStep(3)} onBack={() => setCurrentStep(1)} onChange={updateRegisterData}/>;
+        return <Step2 onNext={() => setCurrentStep(3)} onBack={() => setCurrentStep(1)} onChange={updateRegisterData} />;
       case 3:
-        return <Step3 onNext={() => setCurrentStep(4)} onBack={() => setCurrentStep(2)} onChange={updateRegisterData}/>;
+        return <Step3 onNext={() => setCurrentStep(4)} onBack={() => setCurrentStep(2)} onChange={updateRegisterData} />;
       case 4:
-        return <Step4 onNext={() => setCurrentStep(5)} onBack={() => setCurrentStep(3)} onChange={updateRegisterData}/>;
+        return <Step4 onNext={() => setCurrentStep(5)} onBack={() => setCurrentStep(3)} onChange={updateRegisterData} />;
       case 5:
-        return <Step5 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData}/>;
+        return <Step5 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData} />;
       case 6:
-        return <Step6 onNext={handleFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData}/>;
+        return <Step6 onNext={handleFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData} />;
     }
   };
-  return (
-  <div className="auth">
-    {renderStep()}
-  </div>
-  );
+
+  return <div className="auth">{renderStep()}</div>;
 };
+
