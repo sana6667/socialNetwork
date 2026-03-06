@@ -9,23 +9,26 @@ import { Step6 } from "./Steps/Step6";
 import { BASE_URL } from "../../../api/fetchClent";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../../api/auth";
-import type { RegisterData } from "../../../types/auth";
+
+import type { RegisterData, RegisterRequest } from "../../../types/auth";
+import { mapInterestKeysToIds } from "../../../types/auth";
 //#endregion
 
 export const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
 
+  // Оставляем все поля UI как просил — НИЧЕГО НЕ ВЫКИДЫВАЕМ
   const [registerData, setRegisterData] = useState<RegisterData>({
-    username: "smth@gmail.com",
-    password: "123321@OADas",
+    email: "smth@gmail.com",         // TODO: удалить дефолт
+    password: "123321@OADas",        // TODO: удалить дефолт
     name: "",
     city: "",
-    intrestsId: [],          // front stores strings, but backend expects numbers → FIXED BELOW
-    priorityIds: [],         // backend expects this field → ADDED
-    lookingFor: "",
+    intrestsId: [],                  // UI хранит строковые ключи интересов (напр. 'travel')
     geolocation: null,
+    lookingFor: "",
     photo: null,
+    prioriryIds: [],                 // как у тебя в типе (опечатка сохранена)
   });
 
   const updateRegisterData = (data: Partial<RegisterData>) => {
@@ -33,34 +36,25 @@ export const Register = () => {
   };
 
   const handleFinish = async () => {
-    // 🔥 BACKEND EXPECTS RegisterDto:
+    // БЭКЕНД ЖДЁТ RegisterDto:
     // { username, password, name, city, interestIds: number[], priorityIds: number[] }
 
-    // Convert interests from strings → numeric IDs (example: "travel" → 1)
-    const convertInterest = (item: string) => {
-      const map: Record<string, number> = {
-        travel: 1,
-        cooking: 2,
-        sport: 3,
-      };
-      return map[item] ?? 0;
-    };
+    // Конвертируем string-ключи интересов → числовые id
+    const interestIds = mapInterestKeysToIds(registerData.intrestsId);
 
-    const payload = {
-      username: registerData.username,
+    // Собираем payload ИМЕННО ТАК, как нужно бэкенду
+    const payload: RegisterRequest = {
+      username: registerData.email,         // бэку нужен username (email/телефон)
       password: registerData.password,
       name: registerData.name,
       city: registerData.city,
-
-      // FIXED: correct name & convert to numbers
-      interestIds: registerData.intrestsId.map(convertInterest),
-
-      // FIXED: required by backend
-      priorityIds: registerData.priorityIds,
+      interestIds,                          // number[]
+      priorityIds: registerData.prioriryIds // из UI-такого же поля (с опечаткой)
     };
 
     const response = await register(payload);
 
+    // Загрузка фото (оставил функционал как был)
     if (registerData.photo) {
       const formData = new FormData();
       formData.append("photo", registerData.photo);
@@ -91,9 +85,10 @@ export const Register = () => {
         return <Step5 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData} />;
       case 6:
         return <Step6 onNext={handleFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData} />;
+      default:
+        return null;
     }
   };
 
   return <div className="auth">{renderStep()}</div>;
 };
-
