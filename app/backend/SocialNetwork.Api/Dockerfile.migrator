@@ -12,7 +12,9 @@ RUN dotnet restore backend/SocialNetwork.Api/SocialNetwork.Api.csproj
 COPY backend/ backend/
 
 RUN dotnet tool install --global dotnet-ef --version 8.*
-ENV PATH="$PATH:/root/.dotnet/tools"
+#ENV PATH="$PATH:/root/.dotnet/tools"
+
+ENV PATH="/root/.dotnet/tools:${PATH}"
 
 WORKDIR /src/backend/SocialNetwork.Api
 
