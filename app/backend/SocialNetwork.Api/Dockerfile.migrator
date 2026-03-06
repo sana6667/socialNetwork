@@ -17,15 +17,7 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 WORKDIR /src/backend/SocialNetwork.Api
 
 
-ENTRYPOINT ["/bin/sh","-lc","\
-  dotnet ef database update \
-    --project ../SocialNetwork.Infrastructure \
-    --startup-project . \
-    --context ApplicationDbContext \
-    --no-build \
-    --verbose \
-    --connection \"$ConnectionStrings__DefaultConnection\" \
-"
+ENTRYPOINT ["/bin/sh","-lc","dotnet ef database update --project ../SocialNetwork.Infrastructure --startup-project . --context ApplicationDbContext --no-build --verbose --connection \"$ConnectionStrings__DefaultConnection\""]
 
 
 #ENTRYPOINT ["dotnet", "ef", "database", "update", "--project", "../SocialNetwork.Infrastructure", "--startup-project", "."]
