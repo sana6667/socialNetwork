@@ -117,10 +117,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+
 
 
 
@@ -140,6 +137,12 @@ if (app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+//CORS
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 // --- PROMETHEUS METRICS (до авторизации) ---
 //app.UseMetricServer();
