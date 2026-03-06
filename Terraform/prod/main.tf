@@ -6,7 +6,13 @@ terraform {
         }
 
     }
-    
+    backend "s3" {
+      bucket = "cdn-buck-sana-556-ss"
+      encrypt = true
+      key = "global/s3/terraform.tfstate"
+      dynamodb_table = "terraform-up-and-running-locks"
+      region = "us-east-1"
+    }
 }
 
 provider "aws" {
