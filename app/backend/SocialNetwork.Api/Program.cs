@@ -1,27 +1,31 @@
 using System.Text;
 using Prometheus;
 using SocialNetwork.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore; // adjust namespace
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SocialNetwork.Api.Controllers;
 using SocialNetwork.Api.Middleware;
 using SocialNetwork.Application.Interfaces;
 using SocialNetwork.Application.Services;
+using SocialNetwork.Domain.Entities;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- JWT ---
+
 var jwt = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
 
-// --- Swagger ---
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "SocialNetwork API", Version = "v1" });
 
+    // Add JWT Bearer support so you can test secured endpoints
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -48,80 +52,112 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// --- Controllers ---
+
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(UserController).Assembly);
 
-// --- Services ---
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
-// --- Identity ---
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
-    options.SignIn.RequireConfirmedEmail = true;
-})
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+builder.Services.AddScoped<IInterestService, InterestService>();
+builder.Services.AddScoped<IPriorityService, PriorityService>();
+builder.Services.AddScoped<IMatchService, MatchService>();
 
-// --- Database ---
+
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+    {
+        options.SignIn.RequireConfirmedEmail = true;
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// --- Authentication ---
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer           = true,
-        ValidateAudience         = true,
-        ValidateLifetime         = true,
-        ValidateIssuerSigningKey = true,
 
-        ValidIssuer      = jwt["Issuer"],
-        ValidAudience    = jwt["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
-    };
-});
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            
+            ValidIssuer = jwt["Issuer"],
+            ValidAudience = jwt["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+
+
 
 var app = builder.Build();
 
-// --- CORS ---
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    string[] roles = { "User", "Admin" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
+
 app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-// --- PROMETHEUS METRICS (до авторизации) ---
-app.UseMetricServer();
-app.UseHttpMetrics();
 
-// --- Swagger Dev Only ---
+
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    //app.UseHsts();
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "SocialNetwork API V1");
-        c.RoutePrefix = string.Empty;
+        c.RoutePrefix = string.Empty; // Swagger at root URL: http://localhost:5000/
     });
 }
 
-// --- Static files & Routing ---
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// --- Auth pipeline ---
+// --- PROMETHEUS METRICS (до авторизации) ---
+//app.UseMetricServer();
+app.UseHttpMetrics();
+
+
+//app.MapFallbackToFile("index.html");
+
 app.UseAuthentication();
 app.UseMiddleware<JwtRevocationMiddleware>();
 app.UseAuthorization();
-
-// --- Controllers ---
 app.MapControllers();
 
-// --- Run ---
+
+//Promitheus
+app.MapMetrics();
+
+
 app.Run();
+
+

@@ -21,6 +21,7 @@
     <ProjectReference Include="..\SocialNetwork.Application\SocialNetwork.Application.csproj" />
     <ProjectReference Include="..\SocialNetwork.Infrastructure\SocialNetwork.Infrastructure.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="prometheus-net" Version="8.0.0" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0" />
