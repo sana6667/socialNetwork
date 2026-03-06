@@ -161,9 +161,9 @@ app.UseHttpMetrics();
 //app.MapFallbackToFile("index.html");
 
 app.UseAuthentication();
-app.UseMiddleware<JwtRevocationMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
+//app.UseMiddleware<JwtRevocationMiddleware>();
 
 
 //Promitheus
