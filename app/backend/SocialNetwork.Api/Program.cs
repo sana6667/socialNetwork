@@ -153,6 +153,8 @@ app.UseMiddleware<JwtRevocationMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 
+
+//Promitheus
 app.MapMetrics();
 
 
