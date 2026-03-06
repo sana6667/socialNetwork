@@ -1,4 +1,5 @@
 using System.Text;
+using Prometheus;
 using SocialNetwork.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore; // adjust namespace
 using Microsoft.AspNetCore.Builder;
@@ -99,6 +100,8 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+
+
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -119,6 +122,8 @@ app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader());
 
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -136,7 +141,9 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
-
+// --- PROMETHEUS METRICS (до авторизации) ---
+//app.UseMetricServer();
+app.UseHttpMetrics();
 
 
 //app.MapFallbackToFile("index.html");
@@ -145,6 +152,8 @@ app.UseAuthentication();
 app.UseMiddleware<JwtRevocationMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapMetrics();
 
 
 app.Run();
