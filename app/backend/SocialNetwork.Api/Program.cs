@@ -150,7 +150,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
-
+app.UseCors("AllowAll");  
 
 
 // --- PROMETHEUS METRICS (до авторизации) ---
@@ -163,7 +163,7 @@ app.UseHttpMetrics();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-//app.UseMiddleware<JwtRevocationMiddleware>();
+app.UseMiddleware<JwtRevocationMiddleware>();
 
 
 //Promitheus
