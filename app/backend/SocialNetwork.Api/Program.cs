@@ -95,8 +95,8 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
-
-
+//helz check
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -156,6 +156,10 @@ app.MapControllers();
 
 //Promitheus
 app.MapMetrics();
+
+
+// health check (чтобы Kubernetes не убивал под)
+app.MapHealthChecks("/health").AllowAnonymous();
 
 
 app.Run();
