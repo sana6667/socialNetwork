@@ -6,13 +6,6 @@ terraform {
         }
 
     }
-    backend "s3" {
-      bucket = "cdn-buck-sana-556-ss"
-      encrypt = true
-      region = "us-east-1"
-      key = "global/s3/terraform.tfstate"
-      dynamodb_table = "terraform-up-and-running-locks"
-    }
 }
 
 provider "aws" {
@@ -75,9 +68,9 @@ module "oidc_eks" {
     depends_on = [ module.eks_cluster ]
 }
 
-module "dns_alb" {
-   source = "../module/load-balancer"
-}
+#module "dns_alb" {
+  # source = "../module/load-balancer"
+#}
 
 output "tf_s3_arn" {
     value = module.terr_state_s3.s3_id_nam
