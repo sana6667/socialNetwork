@@ -7,88 +7,77 @@ import { Step3 } from "./Steps/Step3";
 import { Step5 } from "./Steps/Step5";
 import { Step6 } from "./Steps/Step6";
 import { BASE_URL } from "../../../api/fetchClent";
-import { useNavigate } from "react-router-dom";
 import { register } from "../../../api/auth";
-
+import { useNavigate } from "react-router-dom";
 import type { RegisterData, RegisterRequest } from "../../../types/auth";
-import { mapInterestKeysToIds } from "../../../types/auth";
 //#endregion
 
 export const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
-
-  // Оставляем все поля UI как просил — НИЧЕГО НЕ ВЫКИДЫВАЕМ
   const [registerData, setRegisterData] = useState<RegisterData>({
-    email: "smth@gmail.com",         // TODO: удалить дефолт
-    password: "123321@OADas",        // TODO: удалить дефолт
-    name: "",
-    city: "",
-    intrestsId: [],                  // UI хранит строковые ключи интересов (напр. 'travel')
+    email: 'smth@gmail.com', //TODO: delete default email and password
+    password: '123321@OADas', //TODO: delete default email and password
+    name: '',
+    city: '',
+    intrestsId: [],
+    lookingFor: '',
     geolocation: null,
-    lookingFor: "",
     photo: null,
-    prioriryIds: [],                 // как у тебя в типе (опечатка сохранена)
   });
 
   const updateRegisterData = (data: Partial<RegisterData>) => {
-    setRegisterData((prev) => ({ ...prev, ...data }));
+    setRegisterData(prev => ({ ...prev, ...data }));
+  }
+
+const handleFinish = async () => {
+  const data: RegisterRequest = {
+    email: registerData.email,
+    password: registerData.password,
+    name: registerData.name,
+    city: registerData.city,
+    intrestsId: registerData.intrestsId,
+    lookingFor: registerData.lookingFor,
+    geolocation: registerData.geolocation,
   };
 
-  const handleFinish = async () => {
-    // БЭКЕНД ЖДЁТ RegisterDto:
-    // { username, password, name, city, interestIds: number[], priorityIds: number[] }
+  const response = await register(data);
 
-    // Конвертируем string-ключи интересов → числовые id
-    const interestIds = mapInterestKeysToIds(registerData.intrestsId);
+  if (registerData.photo) {
+    const formData = new FormData();
+    formData.append('photo', registerData.photo);
 
-    // Собираем payload ИМЕННО ТАК, как нужно бэкенду
-    const payload: RegisterRequest = {
-      username: registerData.email,         // бэку нужен username (email/телефон)
-      password: registerData.password,
-      name: registerData.name,
-      city: registerData.city,
-      interestIds,                          // number[]
-      priorityIds: registerData.prioriryIds // из UI-такого же поля (с опечаткой)
-    };
+    await fetch(`${BASE_URL}/api/user/${response.user.id}/photo`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${response.token}`,
+      },
+      body: formData,
+    });
+  }
 
-    const response = await register(payload);
-
-    // Загрузка фото (оставил функционал как был)
-    if (registerData.photo) {
-      const formData = new FormData();
-      formData.append("photo", registerData.photo);
-
-      await fetch(`${BASE_URL}/api/user/${response.user.id}/photo`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${response.token}`,
-        },
-        body: formData,
-      });
-    }
-
-    navigate("/mainpage");
-  };
+  navigate('/mainpage');
+};
 
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <Step1 onNext={() => setCurrentStep(2)} onChange={updateRegisterData} />;
+        return <Step1 onNext={() => setCurrentStep(2)} onChange={updateRegisterData}/>;
       case 2:
-        return <Step2 onNext={() => setCurrentStep(3)} onBack={() => setCurrentStep(1)} onChange={updateRegisterData} />;
+        return <Step2 onNext={() => setCurrentStep(3)} onBack={() => setCurrentStep(1)} onChange={updateRegisterData}/>;
       case 3:
-        return <Step3 onNext={() => setCurrentStep(4)} onBack={() => setCurrentStep(2)} onChange={updateRegisterData} />;
+        return <Step3 onNext={() => setCurrentStep(4)} onBack={() => setCurrentStep(2)} onChange={updateRegisterData}/>;
       case 4:
-        return <Step4 onNext={() => setCurrentStep(5)} onBack={() => setCurrentStep(3)} onChange={updateRegisterData} />;
+        return <Step4 onNext={() => setCurrentStep(5)} onBack={() => setCurrentStep(3)} onChange={updateRegisterData}/>;
       case 5:
-        return <Step5 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData} />;
+        return <Step5 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData}/>;
       case 6:
-        return <Step6 onNext={handleFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData} />;
-      default:
-        return null;
+        return <Step6 onNext={handleFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData}/>;
     }
   };
-
-  return <div className="auth">{renderStep()}</div>;
+  return (
+  <div className="auth">
+    {renderStep()}
+  </div>
+  );
 };
