@@ -22,15 +22,6 @@ var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
 
 
 
-// ---------- CORS (ПРАВИЛЬНОЕ МЕСТО — до Build()) ----------
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", p =>
-        p.AllowAnyOrigin()
-         .AllowAnyMethod()
-         .AllowAnyHeader());
-});
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -130,7 +121,10 @@ using (var scope = app.Services.CreateScope())
 }
 
 
-
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 
 // Configure the HTTP request pipeline.
@@ -149,8 +143,7 @@ if (app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
-app.UseCors("AllowAll");  
+ 
 
 
 // --- PROMETHEUS METRICS (до авторизации) ---
@@ -161,9 +154,10 @@ app.UseHttpMetrics();
 //app.MapFallbackToFile("index.html");
 
 app.UseAuthentication();
+app.UseMiddleware<JwtRevocationMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
-app.UseMiddleware<JwtRevocationMiddleware>();
+
 
 
 //Promitheus

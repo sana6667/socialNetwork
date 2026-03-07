@@ -14,14 +14,6 @@ public class JwtRevocationMiddleware
 
     public async Task InvokeAsync(HttpContext context, ApplicationDbContext dbContext)
     {
-        
-        // ⛔ ОБЯЗАТЕЛЬНО: пропускаем CORS preflight
-        if (HttpMethods.IsOptions(context.Request.Method))
-        {
-            await _next(context);
-            return;
-        }
-
         var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
         if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
         {
