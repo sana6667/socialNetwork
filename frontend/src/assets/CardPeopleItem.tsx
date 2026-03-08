@@ -1,5 +1,5 @@
 
-export function CardItem() {
+export function CardPeopleItem() {
   return (
     <div className="card">
       <header className="card__header">

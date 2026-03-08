@@ -10,12 +10,16 @@
 
 //#region components
 @use './components/cardItem.scss';
+@use './components/cardTripItem.scss';
 @use './components/navbar.scss';
+@use './components/HomeHeader.scss';
 //endregion
 
 //#region pages
 @use './pages/auth/register.scss';
 @use './pages/main/mainpage.scss';
+@use './pages/main/People.scss';
+@use './pages/main/Trips.scss';
 //endregion
 
 html {

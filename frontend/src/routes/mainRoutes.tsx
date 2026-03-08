@@ -1,6 +1,8 @@
 // src/routes/main.routes.tsx
 import { type RouteObject } from 'react-router-dom';
 import { MainPage } from '../pages/Main/MainPage';
+import { People } from '../pages/Main/PeoplePage';
+import { Trips } from '../pages/Main/TripsPage';
 
 export const mainRoutes: RouteObject[] = [
   {
@@ -11,8 +13,8 @@ export const mainRoutes: RouteObject[] = [
     path: '/mainpage',
     element: <MainPage />, // Placeholder for the main page
     children: [
-      { index: true, element: <h1> Home </h1> },
-      { path: 'home/trips', element: <h1> Trips </h1> },
+      { index: true, element: <People/> },
+      { path: 'trips', element: <Trips/> },
 
       { 
         path: 'explore',

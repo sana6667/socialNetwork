@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 //#region Imports
 import { useState } from "react";
 import { Step1 } from "./Steps/Step1";
@@ -58,6 +59,10 @@ const handleFinish = async () => {
 
   navigate('/mainpage');
 };
+const handleFinishMock = () => {
+  console.log('Mock register data:', registerData);
+  navigate('/mainpage');
+};
 
   const renderStep = () => {
     switch (currentStep) {
@@ -72,12 +77,12 @@ const handleFinish = async () => {
       case 5:
         return <Step5 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData}/>;
       case 6:
-        return <Step6 onNext={handleFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData}/>;
+        return <Step6 onNext={handleFinishMock} onBack={() => setCurrentStep(5)} onChange={updateRegisterData}/>;
     }
   };
   return (
   <div className="auth">
     {renderStep()}
-  </div>
+  </div>  
   );
 };
