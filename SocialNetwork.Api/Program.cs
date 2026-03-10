@@ -62,6 +62,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IInterestService, InterestService>();
 builder.Services.AddScoped<IPriorityService, PriorityService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
 
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
