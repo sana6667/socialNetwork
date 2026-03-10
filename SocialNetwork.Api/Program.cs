@@ -1,5 +1,6 @@
 using System.Text;
 using SocialNetwork.Infrastructure.Data;
+using Prometheus;
 using Microsoft.EntityFrameworkCore; // adjust namespace
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -118,6 +119,10 @@ app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+
+app.UseMetricServer();
+app.UseHttpMetrics();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
