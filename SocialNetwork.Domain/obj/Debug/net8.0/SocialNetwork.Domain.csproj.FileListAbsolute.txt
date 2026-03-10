@@ -1,0 +1,13 @@
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\bin\Debug\net8.0\SocialNetwork.Domain.deps.json
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\bin\Debug\net8.0\SocialNetwork.Domain.dll
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\bin\Debug\net8.0\SocialNetwork.Domain.pdb
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.csproj.AssemblyReference.cache
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.AssemblyInfoInputs.cache
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.AssemblyInfo.cs
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.csproj.CoreCompileInputs.cache
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.sourcelink.json
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.dll
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\refint\SocialNetwork.Domain.dll
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\SocialNetwork.Domain.pdb
+D:\RiderProjects\SocialNetwork\SocialNetwork.Domain\obj\Debug\net8.0\ref\SocialNetwork.Domain.dll
