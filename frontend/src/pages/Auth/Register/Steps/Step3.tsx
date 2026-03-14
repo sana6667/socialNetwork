@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { RegisterData } from '../../../../types/auth';
+import { useState } from "react";
+import type { RegisterData } from "../../../../types/auth";
 
 type Step3Props = {
   onNext: () => void;
@@ -7,71 +7,29 @@ type Step3Props = {
   onChange: (data: Partial<RegisterData>) => void;
 };
 
-type Interest = {
-  id: string;
-  name: string;
-  icon: string;
-};
-
 export const Step3 = (props: Step3Props) => {
-  const { onNext, onBack, onChange } = props;
-  
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-
-  const allInterests: Interest[] = [
-    { id: 'music', name: 'Music', icon: '🎵' },
-    { id: 'sport', name: 'Sport', icon: '⚽' },
-    { id: 'travel', name: 'Travel', icon: '✈️' },
-    { id: 'cinema', name: 'Cinema', icon: '🎬' },
-    { id: 'games', name: 'Games', icon: '🎮' },
-    { id: 'books', name: 'Books', icon: '📚' },
-    { id: 'cooking', name: 'Cooking', icon: '🍳' },
-    { id: 'photo', name: 'Photography', icon: '📷' },
-    { id: 'art', name: 'Art', icon: '🎨' },
-    { id: 'tech', name: 'Technology', icon: '💻' },
-    { id: 'fashion', name: 'Fashion', icon: '👗' },
-    { id: 'pets', name: 'Pets', icon: '🐾' },
-  ];
-
-  const toggleInterest = (interestId: string) => {
-    if (selectedInterests.includes(interestId)) {
-      setSelectedInterests(selectedInterests.filter(id => id !== interestId));
-    } else {
-      setSelectedInterests([...selectedInterests, interestId]);
-    }
-  };
+  const { onNext, onChange } = props;
+  const [name, setName] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedInterests.length === 0) {
-      alert('Please select at least one interest');
+    if (name.trim() === '') {
+      alert('Please enter your name');
       return;
     }
-    onChange({ intrestsId: selectedInterests });
+    onChange({ name });
     onNext();
-  };
-
+  }
   return (
     <div className="auth__container">
-      <a className="auth__back" onClick={onBack}><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
-      <progress className="auth__progress" value={3} max={6}></progress>
+      <a onClick={() => window.history.back()} className="auth__back"><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
+      <progress className="auth__progress" value={3} max={8}></progress>
       <h1 className="auth__page__title">
-        What your interest?
+        What’s your name?
       </h1>
-      <form className="auth__form" onSubmit={handleSubmit}>
-        
-        <div className="auth__interests__grid">
-          {allInterests.map(interest => (
-            <button
-              key={interest.id}
-              type="button"
-              onClick={() => toggleInterest(interest.id)}
-              className={`auth__interest__item ${selectedInterests.includes(interest.id) ? 'auth__interest__item--selected' : ''}`}
-            >
-              <span className="auth__interest__icon">{interest.icon}</span>
-              <span className="auth__interest__name">{interest.name}</span>
-            </button>
-          ))}
+      <form action="" className="auth__form" onSubmit={handleSubmit}>
+        <div className="auth__input__container">
+          <input value={name} type="text" className="auth__input__field" placeholder="Name" id="auth-name" onChange={(e) => setName(e.target.value)}/>
         </div>
 
         <button className="auth__submit auth__bottom">Next</button>

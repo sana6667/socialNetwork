@@ -1,34 +1,34 @@
 import { useState } from "react";
 import type { RegisterData } from "../../../../types/auth";
 
-type Step1Props = {
+type Step3Props = {
   onNext: () => void;
   onChange: (data: Partial<RegisterData>) => void;
 };
 
-export const Step1 = (props: Step1Props) => {
+export const Step1 = (props: Step3Props) => {
   const { onNext, onChange } = props;
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim() === '') {
+    if (email.trim() === '') {
       alert('Please enter your name');
       return;
     }
-    onChange({ name });
+    onChange({ email });
     onNext();
   }
   return (
     <div className="auth__container">
       <a onClick={() => window.history.back()} className="auth__back"><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
-      <progress className="auth__progress" value={1} max={6}></progress>
+      <progress className="auth__progress" value={1} max={8}></progress>
       <h1 className="auth__page__title">
         What’s your name?
       </h1>
       <form action="" className="auth__form" onSubmit={handleSubmit}>
         <div className="auth__input__container">
-          <input value={name} type="text" className="auth__input__field" placeholder="Name" id="auth-name" onChange={(e) => setName(e.target.value)}/>
+          <input value={email} type="email" className="auth__input__field" placeholder="Name" id="auth-name" onChange={(e) => setEmail(e.target.value)}/>
         </div>
 
         <button className="auth__submit auth__bottom">Next</button>

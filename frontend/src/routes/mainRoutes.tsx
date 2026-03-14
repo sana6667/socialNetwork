@@ -15,16 +15,15 @@ export const mainRoutes: RouteObject[] = [
     children: [
       { index: true, element: <People/> },
       { path: 'trips', element: <Trips/> },
-
-      { 
-        path: 'explore',
-        element: <h1> Explore </h1>,
-        children: [
-          { index: true, element: <h1> Explore Home </h1> },
-        ],
-      },
     ],
   },
+  { 
+  path: 'explore',
+  element: <h1> Explore </h1>,
+  children: [
+    { index: true, element: <h1> Explore Home </h1> },
+  ],
+},
   {
     path: '/profile',
     element: <h1>Profile Page</h1>, // Placeholder for the profile page

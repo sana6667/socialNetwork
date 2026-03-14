@@ -1,12 +1,15 @@
 import { NavLink } from "react-router-dom";
 import { CardTripItem } from "../../../assets/CardTripItem";
+import { Header } from "../../../assets/HomeHeader";
 
 export function Trips() {
 
   const trips = 4; //test data
+  const trevelers = 123; //test data
 
   return (
     <main className="trips__main">
+    <Header contry={'Berlin'} trevelers={trevelers}/>
       <section className="trips__tab">
         <div className="trips__section">
           <div className="trips__section__blank">

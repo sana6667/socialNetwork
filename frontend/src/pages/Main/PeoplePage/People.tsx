@@ -1,14 +1,17 @@
 import { NavLink } from "react-router-dom";
 import { CardPeopleItem } from "../../../assets/CardPeopleItem";
+import { Header } from "../../../assets/HomeHeader";
 
 export function People() {
 
   const range = '2km'; //test data
   const avatar = '/imgs/testAVA.svg'; //test data
   const name = 'John'; //test data
+  const trevelers = 123; //test data
 
   return (
     <main className="people__main">
+      <Header contry={'Berlin'} trevelers={trevelers}/>
       <section className="people__tab">
         <div className="people__section">
           <div className="people__section__blank mainPageActive">

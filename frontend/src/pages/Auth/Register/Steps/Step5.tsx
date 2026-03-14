@@ -1,5 +1,5 @@
-import { useState } from "react";
-import type { RegisterData } from "../../../../types/auth";
+import { useState } from 'react';
+import type { RegisterData } from '../../../../types/auth';
 
 type Step5Props = {
   onNext: () => void;
@@ -7,43 +7,75 @@ type Step5Props = {
   onChange: (data: Partial<RegisterData>) => void;
 };
 
+type Interest = {
+  id: string;
+  name: string;
+  icon: string;
+};
 
 export const Step5 = (props: Step5Props) => {
   const { onNext, onBack, onChange } = props;
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
-  const handleAllow = () => {
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        onChange({
-          geolocation: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }
-        });
-        setLoading(false);
-        onNext();
-      },
-      () => {
-        setError('Could not get location. Please allow access.');
-        setLoading(false);
-      }
-    );
+  const allInterests: Interest[] = [
+    { id: 'music', name: 'Music', icon: '🎵' },
+    { id: 'sport', name: 'Sport', icon: '⚽' },
+    { id: 'travel', name: 'Travel', icon: '✈️' },
+    { id: 'cinema', name: 'Cinema', icon: '🎬' },
+    { id: 'games', name: 'Games', icon: '🎮' },
+    { id: 'books', name: 'Books', icon: '📚' },
+    { id: 'cooking', name: 'Cooking', icon: '🍳' },
+    { id: 'photo', name: 'Photography', icon: '📷' },
+    { id: 'art', name: 'Art', icon: '🎨' },
+    { id: 'tech', name: 'Technology', icon: '💻' },
+    { id: 'fashion', name: 'Fashion', icon: '👗' },
+    { id: 'pets', name: 'Pets', icon: '🐾' },
+  ];
+
+  const toggleInterest = (interestId: string) => {
+    if (selectedInterests.includes(interestId)) {
+      setSelectedInterests(selectedInterests.filter(id => id !== interestId));
+    } else {
+      setSelectedInterests([...selectedInterests, interestId]);
+    }
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedInterests.length === 0) {
+      alert('Please select at least one interest');
+      return;
+    }
+    onChange({ intrestsId: selectedInterests });
+    onNext();
+  };
+
   return (
     <div className="auth__container">
       <a className="auth__back" onClick={onBack}><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
-      <progress className="auth__progress" value={5} max={6}></progress>
-      <h1 className="auth__page__title">You're almost there!</h1>
-      <p>We've found 1,459 people with similar interests who are looking for a place to stay.</p>
+      <progress className="auth__progress" value={5} max={8}></progress>
+      <h1 className="auth__page__title">
+        What your interest?
+      </h1>
+      <form className="auth__form" onSubmit={handleSubmit}>
+        
+        <div className="auth__interests__grid">
+          {allInterests.map(interest => (
+            <button
+              key={interest.id}
+              type="button"
+              onClick={() => toggleInterest(interest.id)}
+              className={`auth__interest__item ${selectedInterests.includes(interest.id) ? 'auth__interest__item--selected' : ''}`}
+            >
+              <span className="auth__interest__icon">{interest.icon}</span>
+              <span className="auth__interest__name">{interest.name}</span>
+            </button>
+          ))}
+        </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <button onClick={handleAllow} disabled={loading} className="auth__submit auth__bottom">
-        {loading ? 'Getting location...' : 'Next'}
-      </button>
+        <button className="auth__submit auth__bottom">Next</button>
+      </form>
     </div>
   );
 }
