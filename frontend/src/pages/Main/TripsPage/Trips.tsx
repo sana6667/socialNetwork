@@ -14,11 +14,11 @@ export function Trips() {
         <div className="trips__section">
           <div className="trips__section__blank">
             <img src="/imgs/tabPeop.svg" alt="People Icon" className="trips__section__blank__icon" />
-            <NavLink to="/mainpage" className="trips__section__blank__link">People nearby</NavLink>
+            <NavLink to="/" className="trips__section__blank__link">People nearby</NavLink>
           </div>
           <div className="trips__section__blank mainPageActive">
             <img src="/imgs/tabPlaneActive.svg" alt="Trips Icon" className="trips__section__blank__icon" />
-            <NavLink to="/mainpage/trips" className="trips__section__blank__link">Trips nearby</NavLink>
+            <NavLink to="/trips" className="trips__section__blank__link">Trips nearby</NavLink>
           </div>
         </div>
 

@@ -12,7 +12,7 @@ export const mainRoutes: RouteObject[] = [
     element: <h1>Dashboard</h1>, // Placeholder for the dashboard page
   },
   {
-    path: '/mainpage',
+    path: '/',
     element: <MainPage />, // Placeholder for the main page
     children: [
       { index: true, element: <People/> },

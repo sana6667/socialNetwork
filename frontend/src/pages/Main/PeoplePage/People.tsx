@@ -16,11 +16,11 @@ export function People() {
         <div className="people__section">
           <div className="people__section__blank mainPageActive">
             <img src="/imgs/tabPeopActive.svg" alt="People Icon" className="people__section__blank__icon" />
-            <NavLink to="/mainpage" className="people__section__blank__link">People nearby</NavLink>
+            <NavLink to="/" className="people__section__blank__link">People nearby</NavLink>
           </div>
           <div className="people__section__blank">
             <img src="/imgs/tabPlane.svg" alt="Trips Icon" className="people__section__blank__icon" />
-            <NavLink to="/mainpage/trips" className="people__section__blank__link">Trips nearby</NavLink>
+            <NavLink to="/trips" className="people__section__blank__link">Trips nearby</NavLink>
           </div>
         </div>
         <div className="people__cards">
