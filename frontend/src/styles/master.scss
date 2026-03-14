@@ -13,6 +13,9 @@
 @use './components/cardTripItem.scss';
 @use './components/navbar.scss';
 @use './components/HomeHeader.scss';
+  //#region explore
+    @use './components/explore/exploreHeader.scss';
+  //#endregion
 //endregion
 
 //#region pages
@@ -20,6 +23,9 @@
 @use './pages/main/mainpage.scss';
 @use './pages/main/People.scss';
 @use './pages/main/Trips.scss';
+  //#region explore
+    @use './pages/main/explore/exp.scss';
+  //#endregion
 //endregion
 
 html {

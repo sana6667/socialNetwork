@@ -1,0 +1,30 @@
+@use '../../abstracts/variables' as *;
+@use '../../abstracts/mixins' as *;
+
+.exphead {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  @include container;
+
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #C14A09;
+    padding: 3px;
+    border-radius: 16px;
+    &__link {
+      padding: 5px 15px;
+      text-decoration: none;
+      color: #F0EFEB;
+      &.active {
+        background-color: #FFFFC5;
+        color: #333333;
+        border-radius: 16px;
+      }
+    }
+  }
+
+}

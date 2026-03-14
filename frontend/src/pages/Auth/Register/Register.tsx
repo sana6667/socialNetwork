@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 //#region Imports
 import { useState } from "react";
 import { BASE_URL } from "../../../api/fetchClent";
