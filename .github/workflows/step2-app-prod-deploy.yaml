@@ -48,10 +48,14 @@ jobs:
                 echo "DB_PORT=$(terraform output -raw rds_port)" >> "$GITHUB_OUTPUT"
                 echo "ECR_ENDPOINT=$(terraform output -raw ecr_endpoint)" >> "$GITHUB_OUTPUT"
                 echo "CERT_ARN=$(terraform output -raw cert_arn)" >> "$GITHUB_OUTPUT"
+            - name: docker build model spam detections
+              run: docker build -t spam-detec -f spam-detections/Dockerfile spam-detections
             - name: docker build socialnetwork site backend
               run: docker build -t diplom-app -f app/backend/SocialNetwork.Api/Dockerfile app
             - name: docker build migrator database
               run: docker build -t migrator-db -f app/backend/SocialNetwork.Api/Dockerfile.migrator app
+            - name: docker image tag spam-detec
+              run: docker tag spam-detec:latest ${{ steps.tf_outputs.outcome.ECR_URL }}:spam-detec-${{ github.sha}}
             - name: docker image tag backend
               run: docker tag diplom-app:latest ${{ steps.tf_outputs.outputs.ECR_URL }}:backend-${{ github.sha }}
             - name: docker image tag migrator database
@@ -60,6 +64,8 @@ jobs:
               run: | 
                 aws ecr get-login-password --region "${{ env.AWS_REGION }}" \
                   | docker login --username AWS --password-stdin "${{ steps.tf_outputs.outputs.ECR_ENDPOINT }}"
+            - name: docker push image spam-detec
+              run: docker push "${{ steps.tf_outputs.outputs.ECR_URL }}:spam-detec-${{ github.sha }}"
             - name: docker push image backend
               run: docker push "${{ steps.tf_outputs.outputs.ECR_URL }}:backend-${{ github.sha }}"
             - name: docker push image migrator db
@@ -78,6 +84,8 @@ jobs:
                 CERT_ARN: ${{ steps.tf_outputs.outputs.CERT_ARN}}
               run: | 
                 export CLUSTER_NAME ECR_URL DB_HOST DB_NAME DB_USER DB_PASSWORD DB_PORT CERT_ARN IMAGE_TAG
+                envsubst < "${{ env.K8S_TPL_DIR }}/deployment-spam-detec.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/deployment-spam-detec.yaml"
+                envsubst < "${{ env.K8S_TPL_DIR }}/service-spam-detec.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/service-spam-detec.yaml"
                 envsubst < "${{ env.K8S_TPL_DIR }}/job-ef.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/job-ef.yaml"
                 envsubst < "${{ env.K8S_TPL_DIR }}/deployment.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/deployment.yaml"
                 envsubst < "${{ env.K8S_TPL_DIR }}/service.yaml.tpl" > "${{ env.K8S_OUT_DIR }}/service.yaml"
@@ -117,5 +125,7 @@ jobs:
                 kubectl apply -f "${{ env.K8S_OUT_DIR }}/service.yaml"
                 kubectl apply -f "${{ env.K8S_OUT_DIR }}/deployment.yaml"
                 kubectl apply -f "${{ env.K8S_OUT_DIR }}/ingress.yaml"
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/service-spam-detec.yaml"
+                kubectl apply -f "${{ env.K8S_OUT_DIR }}/deployment-spam-detec.yaml"
                 kubectl rollout status deploy/backend-deploy -n default --timeout=180s
             
