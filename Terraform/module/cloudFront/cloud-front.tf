@@ -13,6 +13,7 @@ resource "aws_cloudfront_distribution" "cdn" {
     comment = "${var.conf_cloudFron.sub_dns} CDN"
     price_class = "PriceClass_100"
     default_root_object = "index.html"
+    web_acl_id = var.waf_acl_arn
     origin {
         domain_name = var.s3_cdn_import.s3_cdn_name
         origin_id = "origin-cdn-s3"   

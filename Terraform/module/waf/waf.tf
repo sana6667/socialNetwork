@@ -20,6 +20,11 @@ resource "aws_wafv2_web_acl" "socnet_acl" {
     override_action {
       none {}
     }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name = "crs"
+      sampled_requests_enabled = true
+    }
   }
 
   rule {
@@ -36,6 +41,11 @@ resource "aws_wafv2_web_acl" "socnet_acl" {
     override_action {
       none {}
     }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name = "bad-ips"
+      sampled_requests_enabled = true
+    }
   }
 
   rule {
@@ -51,6 +61,11 @@ resource "aws_wafv2_web_acl" "socnet_acl" {
 
     action {
       block {}
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name = "rate-limit"
+      sampled_requests_enabled = true
     }
   }
 

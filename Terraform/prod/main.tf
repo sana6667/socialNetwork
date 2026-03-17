@@ -47,6 +47,7 @@ module "s3_cdn" {
 module "cloudFront" {
     source = "../module/cloudFront"
     s3_cdn_import = module.s3_cdn.s3_cdn_export
+    waf_acl_arn = module.waf_acl.waf_arn
 }
 
 module "policy" {
@@ -68,6 +69,10 @@ module "oidc_eks" {
     depends_on = [ module.eks_cluster ]
 }
 
+module "waf_acl" {
+    source = "../module/waf"
+}
+
 #module "dns_alb" {
   # source = "../module/load-balancer"
 #}
@@ -82,4 +87,8 @@ output "tf_s3_name" {
 
 output "tf_s3_info" {
     value = module.terr_state_s3.s3_info
+}
+
+output "waf_acl_arn" {
+    value = module.waf_acl.waf_arn
 }

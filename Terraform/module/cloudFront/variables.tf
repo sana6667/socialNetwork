@@ -25,3 +25,7 @@ variable "s3_cdn_import" {
       s3_arn_value = string
     })
 }
+
+variable "waf_acl_arn" {
+  type = string
+}
