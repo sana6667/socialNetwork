@@ -55,7 +55,7 @@ jobs:
             - name: docker build migrator database
               run: docker build -t migrator-db -f app/backend/SocialNetwork.Api/Dockerfile.migrator app
             - name: docker image tag spam-detec
-              run: docker tag spam-detec:latest ${{ steps.tf_outputs.outcome.ECR_URL }}:spam-detec-${{ github.sha}}
+              run: docker tag spam-detec:latest ${{ steps.tf_outputs.outputs.ECR_URL }}:spam-detec-${{ github.sha}}
             - name: docker image tag backend
               run: docker tag diplom-app:latest ${{ steps.tf_outputs.outputs.ECR_URL }}:backend-${{ github.sha }}
             - name: docker image tag migrator database
