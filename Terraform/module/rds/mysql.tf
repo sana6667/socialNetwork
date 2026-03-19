@@ -26,4 +26,8 @@ resource "aws_db_instance" "rds" {
     multi_az = false
     skip_final_snapshot = true
     deletion_protection = false
+    
+    tags = {
+        name = "ms-sql-ser"
+    }
 }
