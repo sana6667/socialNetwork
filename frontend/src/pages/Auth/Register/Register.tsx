@@ -55,12 +55,12 @@ export const Register = () => {
       });
     }
 
-    navigate('/mainpage');
+    navigate('/');
   };
 
   const handleFinishMock = () => {
     console.log('Mock register data:', registerData);
-    navigate('/mainpage');
+    navigate('/');
   };
 
   const chooseFinish = trueFinish ? handleFinish : handleFinishMock;
@@ -84,9 +84,9 @@ export const Register = () => {
       case 5:
         return <Step5 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData}/>;
       case 6:
-        return <Step6 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData}/>;
+        return <Step6 onNext={() => setCurrentStep(7)} onBack={() => setCurrentStep(5)} onChange={updateRegisterData}/>;
       case 7:
-        return <Step7 onNext={() => setCurrentStep(6)} onBack={() => setCurrentStep(4)} onChange={updateRegisterData}/>;
+        return <Step7 onNext={() => setCurrentStep(8)} onBack={() => setCurrentStep(6)} onChange={updateRegisterData}/>;
       case 8:
         return <Step8 onNext={chooseFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData}/>;
     }

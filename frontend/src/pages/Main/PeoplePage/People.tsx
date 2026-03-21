@@ -20,7 +20,7 @@ export function People() {
           </div>
           <div className="people__section__blank">
             <img src="/imgs/tabPlane.svg" alt="Trips Icon" className="people__section__blank__icon" />
-            <NavLink to="/trips" className="people__section__blank__link">Trips nearby</NavLink>
+            <NavLink to="/home/trips" className="people__section__blank__link">Trips nearby</NavLink>
           </div>
         </div>
         <div className="people__cards">

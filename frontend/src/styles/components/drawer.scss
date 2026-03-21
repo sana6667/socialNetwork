@@ -1,0 +1,28 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 80%;
+  z-index: 11;
+  background-color: #264653;
+  padding-left: 16px;
+  padding-right: 16px;
+  
+  transform: translateX(100%); // скрыт за правым краем
+  transition: transform 0.3s ease;
+
+  &.open {
+    transform: translateX(0); // выехал
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}

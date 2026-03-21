@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import cn from 'classnames';
 import { useState } from "react";
+import { useDrawer } from "../../../context/DrawerProvider";
 
 
 export function ExploreHeader () {
 
   const [active, setActive] = useState('hangouts');
+
+  const { open } = useDrawer();
 
   return (
     <header className="exphead">
@@ -33,7 +36,9 @@ export function ExploreHeader () {
         </Link>
       </nav>
       <div className="exphead__dots">
-        <img src="/icons/mainpage/exploreHeader/dots.svg" alt="" />
+        <button className="dots__button" onClick={open}>
+          <img src="/icons/mainpage/exploreHeader/dots.svg" alt="" />
+        </button>
       </div>
     </header>
   );

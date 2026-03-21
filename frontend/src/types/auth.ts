@@ -8,7 +8,7 @@ export type RegisterRequest = {
   password: string;
   name: string;
   city: string;
-  intrestsId: string[];
+  intrestsId: number[];
   lookingFor: string;
   geolocation: Geolocation | null; //null если пользователь не предоставил геолокацию
 };
@@ -27,14 +27,15 @@ export type RegisterData = {
   password: string;
   name: string;
   city: string;
-  intrestsId: string[];
+  //intrestsId: string[];
+  intrestsId: number[];
   geolocation: Geolocation | null; //null если пользователь не предоставил геолокацию
   lookingFor: string;
   photo: File | null;
 };
 
 type Interest = {
-  id: string;
+  id: number;
   name: string;
   icon: string;
 };
@@ -47,18 +48,18 @@ type Geolocation = {
 //#region TODO: delete test data
 
   export const allInterests: Interest[] = [
-    { id: 'music', name: 'Music', icon: '🎵' },
-    { id: 'sport', name: 'Sport', icon: '⚽' },
-    { id: 'travel', name: 'Travel', icon: '✈️' },
-    { id: 'cinema', name: 'Cinema', icon: '🎬' },
-    { id: 'games', name: 'Games', icon: '🎮' },
-    { id: 'books', name: 'Books', icon: '📚' },
-    { id: 'cooking', name: 'Cooking', icon: '🍳' },
-    { id: 'photo', name: 'Photography', icon: '📷' },
-    { id: 'art', name: 'Art', icon: '🎨' },
-    { id: 'tech', name: 'Technology', icon: '💻' },
-    { id: 'fashion', name: 'Fashion', icon: '👗' },
-    { id: 'pets', name: 'Pets', icon: '🐾' },
+    { id: 1, name: 'Music', icon: '🎵' },
+    { id: 2, name: 'Sport', icon: '⚽' },
+    { id: 3, name: 'Travel', icon: '✈️' },
+    { id: 4, name: 'Cinema', icon: '🎬' },
+    { id: 5, name: 'Games', icon: '🎮' },
+    { id: 6, name: 'Books', icon: '📚' },
+    { id: 7, name: 'Cooking', icon: '🍳' },
+    { id: 8, name: 'Photography', icon: '📷' },
+    { id: 9, name: 'Art', icon: '🎨' },
+    { id: 10, name: 'Technology', icon: '💻' },
+    { id: 11, name: 'Fashion', icon: '👗' },
+    { id: 12, name: 'Pets', icon: '🐾' },
   ];
 
 

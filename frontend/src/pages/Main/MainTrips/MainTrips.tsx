@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { CardTripItem } from "../../../assets/CardTripItem";
 import { Header } from "../../../assets/HomeHeader";
 
-export function Trips() {
+export function MainTrips() {
 
   const trips = 4; //test data
   const trevelers = 123; //test data
@@ -18,7 +18,7 @@ export function Trips() {
           </div>
           <div className="trips__section__blank mainPageActive">
             <img src="/imgs/tabPlaneActive.svg" alt="Trips Icon" className="trips__section__blank__icon" />
-            <NavLink to="/trips" className="trips__section__blank__link">Trips nearby</NavLink>
+            <NavLink to="/home/trips" className="trips__section__blank__link">Trips nearby</NavLink>
           </div>
         </div>
 
