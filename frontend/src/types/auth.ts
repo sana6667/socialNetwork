@@ -4,12 +4,12 @@ export type LoginRequest = {
 };
 
 export type RegisterRequest = {
-  email: string;
-  password: string;
   name: string;
+  password: string;
   city: string;
+  email: string; // или телефон
   intrestsId: number[];
-  lookingFor: string;
+  lookingForid: number;
   geolocation: Geolocation | null; //null если пользователь не предоставил геолокацию
 };
 
@@ -27,10 +27,9 @@ export type RegisterData = {
   password: string;
   name: string;
   city: string;
-  //intrestsId: string[];
   intrestsId: number[];
+  lookingForId: number;
   geolocation: Geolocation | null; //null если пользователь не предоставил геолокацию
-  lookingFor: string;
   photo: File | null;
 };
 
@@ -62,13 +61,17 @@ type Geolocation = {
     { id: 12, name: 'Pets', icon: '🐾' },
   ];
 
+  export type Look = {
+    id: number,
+    value: string,
+  }
 
-  export const OPTIONS = [
-  'Meet other people',
-  'Stay with local hosts',
-  'Find travel buddies',
-  'Host other people',
-  'Share accommodation',
-  'Get tips & safety advise',
-];
+  export const OPTIONS: Look[] = [
+    { id: 1, value: 'Meet other people' },
+    { id: 2, value: 'Stay with local hosts' },
+    { id: 3, value: 'Find travel buddies' },
+    { id: 4, value: 'Host other people' },
+    { id: 5, value: 'Share accommodation' },
+    { id: 6, value: 'Get tips & safety advise' },
+  ];
 //#endregion

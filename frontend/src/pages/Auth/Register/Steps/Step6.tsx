@@ -10,7 +10,7 @@ type Step6Props = {
 
 export const Step6 = (props: Step6Props) => {
     const { onNext, onBack, onChange } = props;
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +18,7 @@ export const Step6 = (props: Step6Props) => {
       alert('Please select an option');
       return;
     }
-    onChange({ lookingFor: selected });
+    onChange({ lookingForId: selected });
     onNext();
   };
   return (
@@ -29,15 +29,15 @@ export const Step6 = (props: Step6Props) => {
       <form className="auth__form" onSubmit={handleSubmit}>
         <div className="auth__radio__list">
           {OPTIONS.map((option) => (
-            <label key={option} className="auth__radio__item">
-              <span>{option}</span>
+            <label key={option.id} className="auth__radio__item">
+              <span>{option.value}</span>
               <input
                 type="radio"
                 name="lookingFor"
-                value={option}
+                value={option.value}
                 className="auth__radio_check"
-                checked={selected === option}
-                onChange={() => setSelected(option)}
+                checked={selected === option.id}
+                onChange={() => setSelected(option.id)}
               />
             </label>
           ))}

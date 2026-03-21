@@ -24,7 +24,7 @@ export const Register = () => {
     name: '',
     city: '',
     intrestsId: [],
-    lookingFor: '',
+    lookingForId: 0,
     geolocation: null,
     photo: null,
   });
@@ -36,7 +36,7 @@ export const Register = () => {
       name: registerData.name,
       city: registerData.city,
       intrestsId: registerData.intrestsId,
-      lookingFor: registerData.lookingFor,
+      lookingForid: registerData.lookingForId,
       geolocation: registerData.geolocation,
     };
 
