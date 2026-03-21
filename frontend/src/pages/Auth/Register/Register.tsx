@@ -17,7 +17,7 @@ import { Step1 } from "./Steps/Step1";
 export const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
-  const trueFinish = false // place true if u need test code on server
+  const trueFinish = true; // place true if u need test code on server
   const [registerData, setRegisterData] = useState<RegisterData>({
     email: '',
     password: '',
