@@ -9,3 +9,7 @@ variable "lambda_role_ec2_arn" {
 variable "cloud_watch_rule" {
     default = "ec2-snapshot-daily"
 }
+
+variable "bastion_admin_id" {
+    type = string
+}

@@ -93,6 +93,8 @@ resource "aws_iam_role_policy" "lambda_pole_policy_ec2" {
                 Action = [
                     "ec2:CreateSnapshot",
                     "ec2:DescribeInstances",
+                    "ec2:DescribeVolumes",
+                    "ec2:CreateTags"
                 ]
                 Resource = "*"
                 Effect = "Allow"
@@ -120,7 +122,8 @@ resource "aws_iam_role_policy" "lambda_role_policy_rds" {
                 Action = [
                     "rds:CreateDBSnapshot",
                     "rds:DescribeDBSnapshots",
-                    "rds:DescribeDBInstances"
+                    "rds:DescribeDBInstances",
+                    "rds:AddTagsToResource"
                     
                 ]
                 Resource = "*"

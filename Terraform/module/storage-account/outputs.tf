@@ -5,3 +5,7 @@ output "blob_stor_export" {
        container_name = azurerm_storage_container.container.name
     }
 }
+
+output "con_str" {
+    value = azurerm_storage_account.az_stor_account.primary_connection_string
+}

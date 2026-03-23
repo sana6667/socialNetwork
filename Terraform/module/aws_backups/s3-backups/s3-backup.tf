@@ -6,15 +6,12 @@ resource "aws_s3_bucket" "backup_s3_diplom" {
     }
 }
 
-resource "aws_s3_bucket_acl" "backup_acl" {
-    bucket = aws_s3_bucket.backup_s3_diplom.bucket
-    acl = "private"
-}
+
 
 resource "aws_s3_bucket_versioning" "backup_versioning" {
     bucket = aws_s3_bucket.backup_s3_diplom.bucket
     versioning_configuration {
-        status = "Enable"
+        status = "Enabled"
     }
 }
 
@@ -22,7 +19,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "backup_encrypt" {
     bucket = aws_s3_bucket.backup_s3_diplom.bucket
     rule {
         apply_server_side_encryption_by_default {
-          sse_algorithm = "AES-256"
+          sse_algorithm = "AES256"
         }
     }
 }

@@ -10,3 +10,8 @@ variable "lambda_rds_role_name" {
 variable "cloud_watch_rule_name" {
     default = "rds-snapshot-daily"
 }
+
+variable "rds_id" {
+    type = string
+}
+

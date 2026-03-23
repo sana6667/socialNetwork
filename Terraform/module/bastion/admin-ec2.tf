@@ -22,5 +22,6 @@ resource "aws_instance" "bastion_host" {
     tags = {
         name = "bastion-host-admin"
     }
+    iam_instance_profile = aws_iam_instance_profile.admin_ec2_profile.name
 
 }

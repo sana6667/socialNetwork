@@ -4,6 +4,10 @@ terraform {
             source = "hashicorp/aws"
             version = ">= 5.60"
         }
+        azurerm = {
+            source = "hashicorp/azurerm"
+            version = ">=4.0.0"
+        }
 
     }
 }
@@ -11,6 +15,12 @@ terraform {
 provider "aws" {
     region = "us-east-1"
 }
+
+provider "azurerm" {
+    features {
+      
+    }
+} 
 
 module "network" {
     source = "../module/eks/data-panel/networks"
@@ -21,6 +31,7 @@ module "bastion" {
     source = "../module/bastion"
     pub_sub_bastion = module.network.subnet_id_bastion
     conf_net_export = module.network.network_conf_export
+    s3_bac_arn = module.aws_bac.s3_bac_arn
 }
 
 module "eks_cluster" {
@@ -73,9 +84,24 @@ module "waf_acl" {
     source = "../module/waf"
 }
 
+module "blob_storage" {
+    source = "../module/storage-account"
+}
+
+module "aws_bac" {
+    source = "../module/aws_backups"
+    con_str_value = module.blob_storage.con_str
+    stor_account_import = module.blob_storage.blob_stor_export
+    rds_id = module.rds.rds_id
+    bastion_admin_id = module.bastion.bastion_admin_id
+    
+
+}
+
 #module "dns_alb" {
    #source = "../module/load-balancer"
 #}
+
 
 output "tf_s3_arn" {
     value = module.terr_state_s3.s3_id_nam
@@ -92,3 +118,4 @@ output "tf_s3_info" {
 output "waf_acl_arn" {
     value = module.waf_acl.waf_arn
 }
+

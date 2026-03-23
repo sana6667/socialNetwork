@@ -21,3 +21,8 @@ variable "conf_net_export" {
         vpc_id_value = string
     })
 }
+
+variable "s3_bac_arn" {
+    type = string
+}
+

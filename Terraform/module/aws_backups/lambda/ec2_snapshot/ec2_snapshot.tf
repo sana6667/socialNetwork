@@ -1,14 +1,14 @@
-data "aws_instances" "admin_ec2" {
-    filter {
-        name = "tag:name"
-        values = ["bastion-host-admin"]
-    }
-} 
+#data "aws_instances" "admin_ec2" {
+ #   filter {
+  #      name = "tag:name"
+   #     values = ["bastion-host-admin"]
+   # }
+#} 
 
 resource "aws_lambda_function" "ec2_snapshot_lambda" {
     function_name = var.ec2_snapshon_lambda_name
     role = var.lambda_role_ec2_arn
-    handler = "lambda_function.lambda_handler"
+    handler = "ec2_snapshot.lambda_handler"
     runtime = "python3.12"
 
     filename = "${path.module}/ec2_snapshot.zip"
@@ -16,7 +16,7 @@ resource "aws_lambda_function" "ec2_snapshot_lambda" {
 
     environment {
         variables = {
-            INSTANCE_ID = data.aws_instances.admin_ec2.id
+            INSTANCE_ID = var.bastion_admin_id #data.aws_instances.admin_ec2.ids[0]
         }
     }
 }
@@ -25,7 +25,7 @@ resource "aws_lambda_function" "ec2_snapshot_lambda" {
 resource "aws_cloudwatch_event_rule" "ec2_snapshot_daily" {
     name = var.cloud_watch_rule
     description = "Daily EC2 snapshot"
-    schedule_expression = "cron(0 3 * * ? *)"
+    schedule_expression = "cron(0 3 ? * SUN *)"
 }
 
 resource "aws_lambda_permission" "eventbridge_permission_ec2" {
