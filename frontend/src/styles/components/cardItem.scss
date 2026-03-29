@@ -14,6 +14,12 @@
       position: relative;
     }
 
+    &__avatar {
+      width: 39px;
+      height: 39px;
+      border-radius: 32px;
+    }
+
     &__country {
       position: absolute;
       bottom: 0;

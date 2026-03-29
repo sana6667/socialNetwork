@@ -126,7 +126,9 @@
             gap: 5px;
 
             &__img {
-
+              width: 39px;
+              height: 39px;
+              border-radius: 32px;
             }
             &__text {
               @include text(16px, 100%, 400, -0.24px);

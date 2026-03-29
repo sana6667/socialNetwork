@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NavLink } from "react-router-dom";
 import { CardPeopleItem } from "../../../assets/CardPeopleItem";
 import { Header } from "../../../assets/HomeHeader";
@@ -5,7 +6,7 @@ import { Header } from "../../../assets/HomeHeader";
 export function People() {
 
   const range = '2km'; //test data
-  const avatar = '/imgs/testAVA.svg'; //test data
+  const avatar2 = '/imgs/testAVA.jpg'; //test data
   const name = 'John'; //test data
   const trevelers = 123; //test data
 
@@ -25,15 +26,15 @@ export function People() {
         </div>
         <div className="people__cards">
           <div className="people__cards__card">
-            <img src={avatar} alt="Card 1" className="people__cards__card__img" />
+            <img src={avatar2} alt="Card 1" className="people__cards__card__img" />
             <p className="people__cards__card__text">{name}, {range}</p>
           </div>
           <div className="people__cards__card">
-            <img src={avatar} alt="Card 1" className="people__cards__card__img" />
+            <img src={avatar2} alt="Card 1" className="people__cards__card__img" />
             <p className="people__cards__card__text">{name}, {range}</p>
           </div>
           <div className="people__cards__card">
-            <img src={avatar} alt="Card 1" className="people__cards__card__img" />
+            <img src={avatar2} alt="Card 1" className="people__cards__card__img" />
             <p className="people__cards__card__text">{name}, {range}</p>
           </div>
         </div>
