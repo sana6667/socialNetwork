@@ -36,9 +36,8 @@ export const Register = () => {
     formData.append('Name', registerData.name);
     formData.append('City', registerData.city);
 
-    formData.append('Latitude', registerData.Latitude.toFixed(6));
-    formData.append('Longitude', registerData.Longitude.toFixed(6));
-    
+    formData.append('Latitude', registerData.Latitude.toString().replace('.', ','));
+    formData.append('Longitude', registerData.Longitude.toString().replace('.', ','));
 
     registerData.intrestsId.forEach(id => {
       formData.append('InterestIds', String(id));
