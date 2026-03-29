@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.soc-net.lat.';
+export const BASE_URL = 'http://localhost:5015';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
