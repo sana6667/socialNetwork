@@ -1,9 +1,8 @@
 //#region Imports
 import { useState } from "react";
-import { BASE_URL } from "../../../api/fetchClent";
-import { register } from "../../../api/auth";
+import { registerFormData } from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
-import type { RegisterData, RegisterRequest } from "../../../types/auth";
+import type { RegisterData } from "../../../types/auth";
 import { Step3 } from "./Steps/Step3";
 import { Step4 } from "./Steps/Step4";
 import { Step5 } from "./Steps/Step5";
@@ -17,53 +16,44 @@ import { Step1 } from "./Steps/Step1";
 export const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
-  const trueFinish = false // place true if u need test code on server
   const [registerData, setRegisterData] = useState<RegisterData>({
-    email: '',
+    username: '',
     password: '',
-    name: '',
     city: '',
+    name: '',
     intrestsId: [],
     lookingForId: 0,
-    geolocation: null,
+    Latitude: 0,
+    Longitude: 0,
     photo: null,
   });
 
   const handleFinish = async () => {
-    const data: RegisterRequest = {
-      email: registerData.email,
-      password: registerData.password,
-      name: registerData.name,
-      city: registerData.city,
-      intrestsId: registerData.intrestsId,
-      lookingForid: registerData.lookingForId,
-      geolocation: registerData.geolocation,
-    };
+    const formData = new FormData();
 
-    const response = await register(data);
+    formData.append('Username', registerData.username);
+    formData.append('Password', registerData.password);
+    formData.append('Name', registerData.name);
+    formData.append('City', registerData.city);
+
+    formData.append('Latitude', registerData.Latitude.toFixed(6));
+    formData.append('Longitude', registerData.Longitude.toFixed(6));
+    
+
+    registerData.intrestsId.forEach(id => {
+      formData.append('InterestIds', String(id));
+    });
+
+    formData.append('PriorityIds', String(registerData.lookingForId));
 
     if (registerData.photo) {
-      const formData = new FormData();
-      formData.append('photo', registerData.photo);
-
-      await fetch(`${BASE_URL}/api/user/${response.user.id}/photo`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${response.token}`,
-        },
-        body: formData,
-      });
+      formData.append('Image', registerData.photo);
     }
 
+    const response = await registerFormData(formData);
+    console.log('Server response:', response);
     navigate('/');
   };
-
-  const handleFinishMock = () => {
-    console.log('Mock register data:', registerData);
-    navigate('/');
-  };
-
-  const chooseFinish = trueFinish ? handleFinish : handleFinishMock;
 
   const updateRegisterData = (data: Partial<RegisterData>) => {
     setRegisterData(prev => ({ ...prev, ...data }));
@@ -88,7 +78,7 @@ export const Register = () => {
       case 7:
         return <Step7 onNext={() => setCurrentStep(8)} onBack={() => setCurrentStep(6)} onChange={updateRegisterData}/>;
       case 8:
-        return <Step8 onNext={chooseFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData}/>;
+        return <Step8 onNext={handleFinish} onBack={() => setCurrentStep(5)} onChange={updateRegisterData}/>;
     }
   };
   return (

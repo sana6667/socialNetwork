@@ -21,6 +21,7 @@ export const Step6 = (props: Step6Props) => {
     onChange({ lookingForId: selected });
     onNext();
   };
+
   return (
     <div className="auth__container">
       <a className="auth__back" onClick={onBack}><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>

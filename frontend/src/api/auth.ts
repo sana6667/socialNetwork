@@ -1,4 +1,4 @@
-import { request } from './fetchClent';
+import { request, requestFormData } from './fetchClent';
 import type { LoginRequest, RegisterRequest, AuthResponse } from '../types/auth'
 
 export function login(data: LoginRequest) {
@@ -23,5 +23,13 @@ export function logout(token: string) {
     'POST',
     undefined,
     token,
+  );
+}
+
+export function registerFormData(data: FormData) {
+  return requestFormData<AuthResponse>(
+    '/api/user/register',
+    'POST',
+    data,
   );
 }
