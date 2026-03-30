@@ -1,0 +1,123 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+
+.drawer {
+  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 80%;
+  z-index: 11;
+  background-color: #264653;
+  padding-left: 16px;
+  padding-right: 16px;
+  
+  transform: translateX(100%); // скрыт за правым краем
+  transition: transform 0.3s ease;
+
+  &.open {
+    transform: translateX(0); // выехал
+  }
+}
+
+.drawcont {
+  margin-top: 50px;
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__profile {
+      display: flex;
+      gap: 8px;
+
+      //&__avatar {}
+ 
+      &__block {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        &__name {
+          color: #F0EFEB;
+          @include text(14px,100%,700,-0.24px)
+        }
+        &__link {
+          text-decoration: none;
+          color: #F0EFEB;
+          @include text(12px,100%,400,-0.24px)
+        }
+      }
+    }
+ 
+    &__settings {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      &__img {
+        width: 24px;
+        height: 24px;
+      }
+ 
+      &__text {
+        color: #F0EFEB;
+        @include text(12px,100%,400,-0.24px)
+      }
+    }
+  }
+ 
+  &__section {
+    margin-top: 30px;
+    &__title {
+      color: #F0EFEB;
+      @include text(24px,100%,510,-0.24px)
+    }
+  }
+ 
+  &__item {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ 
+    &__left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+ 
+    //&__icon {}
+ 
+    &__text {
+      color: #F0EFEB;
+      @include text(20px,100%,400,-0.24px)
+    }
+  }
+ 
+  &__logout {
+    position: absolute;
+    bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    left: 16px; 
+    right: 16px;
+    &__left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &__text {
+      color: #D92222;
+      @include text(20px,100%,510,-0.24px)
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
