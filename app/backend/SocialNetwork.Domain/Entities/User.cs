@@ -18,4 +18,9 @@ public class User :IdentityUser
     public List<UserInterest> Interests { get; set; } = new ();
     public List<UserPriority> Priorities { get; set; } = new ();
     
+    public ICollection<Post> Posts { get; set; } = new List<Post>();
+    public ICollection<PostLike> PostLikes { get; set; } = new List<PostLike>();
+    public ICollection<PostComment> PostComments { get; set; } = new List<PostComment>();
+   
+
 }

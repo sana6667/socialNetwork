@@ -1,6 +1,7 @@
 using System.Text;
 using Prometheus;
 using SocialNetwork.Infrastructure.Data;
+using Prometheus;
 using Microsoft.EntityFrameworkCore; // adjust namespace
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -65,6 +66,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IInterestService, InterestService>();
 builder.Services.AddScoped<IPriorityService, PriorityService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
 
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -125,6 +127,9 @@ app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+
+app.UseMetricServer();
+app.UseHttpMetrics();
 
 
 // Configure the HTTP request pipeline.

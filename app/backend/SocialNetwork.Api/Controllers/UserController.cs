@@ -44,11 +44,45 @@ public class UserController :ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+    public async Task<IActionResult> Register([FromForm] RegisterDto registerDto, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(registerDto.Username))
         {
             return BadRequest("Email or phone is required");
+        }
+
+        string? imageUrl = null;
+
+        
+
+        if (registerDto.Image != null && registerDto.Image.Length > 0)
+        {
+            var uploadsFolder=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            Directory.CreateDirectory(uploadsFolder);
+            
+            var extension =Path.GetExtension(registerDto.Image.FileName);
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var path = Path.Combine(uploadsFolder, fileName);
+            
+            await using var stream = new FileStream(path, FileMode.Create);
+            await registerDto.Image.CopyToAsync(stream, ct);
+            imageUrl = $"{Request.Scheme}://{Request.Host}/images/{fileName}";
+            
+        }
+        
+        double? latRounded = null;
+        double? lngRounded = null;
+        
+        if (registerDto.Latitude != null && registerDto.Longitude != null)
+        {
+            if (registerDto.Latitude.Value is < -90 or > 90 ||
+                registerDto.Longitude.Value is < -180 or > 180)
+            {
+                return BadRequest("Invalid coordinates");
+            }
+            
+            latRounded = Math.Round(registerDto.Latitude.Value, 2);
+            lngRounded = Math.Round(registerDto.Longitude.Value, 2);
         }
 
         var user = new User
@@ -57,7 +91,15 @@ public class UserController :ControllerBase
             PhoneNumber = registerDto.Username.Contains("@")? null:registerDto.Username,
             Email = registerDto.Username.Contains("@")? registerDto.Username:null,
             Name = registerDto.Name,
-            City = registerDto.City
+            City = registerDto.City,
+            ImageUrl = imageUrl,
+            LatRounded = latRounded,
+            LngRounded = lngRounded,
+            LocationUpdatedAt = latRounded.HasValue && lngRounded.HasValue? DateTime.UtcNow : null,
+            LastActiveAt = DateTime.UtcNow
+            
+            
+                
         };
 
         var result = await _userManager.CreateAsync(user, registerDto.Password);
@@ -84,7 +126,7 @@ public class UserController :ControllerBase
            
         }
 
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(ct);
         
         
         await _userManager.AddToRoleAsync(user, "User");
