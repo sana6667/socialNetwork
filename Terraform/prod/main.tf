@@ -23,11 +23,11 @@ provider "aws" {
     region = "us-east-1"
 }
 
-provider "azurerm" {
-    features {
+#provider "azurerm" {
+ #   features {
       
-    }
-} 
+ #   }
+#} 
 
 module "network" {
     source = "../module/eks/data-panel/networks"
