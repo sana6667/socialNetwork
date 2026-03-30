@@ -25,7 +25,7 @@ export type AuthResponse = {
 
 
 export type RegisterData = {
-  username: string;
+  username: string; 
   password: string;
   name: string;
   city: string;
