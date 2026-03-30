@@ -4,10 +4,10 @@ terraform {
             source = "hashicorp/aws"
             version = ">= 5.60"
         }
-        azurerm = {
-            source = "hashicorp/azurerm"
-            version = ">=4.0.0"
-        }
+        #azurerm = {
+         #   source = "hashicorp/azurerm"
+          #  version = ">=4.0.0"
+        #}
 
     }
     backend "s3" {
