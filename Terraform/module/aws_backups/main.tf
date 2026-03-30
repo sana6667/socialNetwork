@@ -5,10 +5,10 @@ terraform {
       version = ">= 5.60"
     }
 
-    #azurerm = {
-     # source  = "hashicorp/azurerm"
-     # version = ">= 4.0"
-    #}
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 4.0"
+    }
   }
 }
 
@@ -16,9 +16,9 @@ provider "aws" {
   region = "us-east-1"
 }
 
-#provider "azurerm" {
- # features {}
-#}
+provider "azurerm" {
+  features {}
+}
 
 
 module "eventBrigeCron" {

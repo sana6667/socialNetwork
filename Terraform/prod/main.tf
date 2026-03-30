@@ -4,10 +4,10 @@ terraform {
             source = "hashicorp/aws"
             version = ">= 5.60"
         }
-        #azurerm = {
-         #   source = "hashicorp/azurerm"
-          #  version = ">=4.0.0"
-        #}
+        azurerm = {
+            source = "hashicorp/azurerm"
+            version = ">=4.0.0"
+        }
 
     }
     backend "s3" {
@@ -27,7 +27,6 @@ provider "azurerm" {
     features {
       
     }
-    skip_provider_registration = true
 } 
 
 module "network" {
@@ -106,9 +105,9 @@ module "aws_bac" {
 
 }
 
-module "dns_alb" {
-   source = "../module/load-balancer"
-}
+#module "dns_alb" {
+ #  source = "../module/load-balancer"
+#}
 
 
 output "tf_s3_arn" {
