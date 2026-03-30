@@ -27,3 +27,4 @@ Thumbs.db
 crash.log
 override.tf
 override.tf.json
+node_modules
