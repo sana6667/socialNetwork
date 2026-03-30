@@ -1,8 +1,0 @@
-@use '../../../abstracts/variables' as *;
-@use '../../../abstracts/mixins' as *;
-
-.exp {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
