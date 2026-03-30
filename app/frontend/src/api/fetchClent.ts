@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:5015';
+export const BASE_URL = 'http://192.168.0.104:5015';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
