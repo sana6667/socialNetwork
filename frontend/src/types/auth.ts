@@ -4,13 +4,15 @@ export type LoginRequest = {
 };
 
 export type RegisterRequest = {
-  name: string;
+  username : string;
   password: string;
   city: string;
-  email: string; // или телефон
+  name: string;
   intrestsId: number[];
   lookingForid: number;
-  geolocation: Geolocation | null; //null если пользователь не предоставил геолокацию
+  Latitude: number;
+  Longitude: number;
+  
 };
 
 export type AuthResponse = {
@@ -23,13 +25,14 @@ export type AuthResponse = {
 
 
 export type RegisterData = {
-  email: string;
+  username: string;
   password: string;
   name: string;
   city: string;
   intrestsId: number[];
   lookingForId: number;
-  geolocation: Geolocation | null; //null если пользователь не предоставил геолокацию
+  Latitude: number;
+  Longitude: number;
   photo: File | null;
 };
 
@@ -38,11 +41,6 @@ type Interest = {
   name: string;
   icon: string;
 };
-
-type Geolocation = {
-  lat: number;
-  lng: number;
-}
 
 //#region TODO: delete test data
 

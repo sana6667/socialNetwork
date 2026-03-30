@@ -18,10 +18,8 @@ export const Step7 = (props: Step7Props) => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         onChange({
-          geolocation: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }
+            Latitude: position.coords.latitude,
+            Longitude: position.coords.longitude,
         });
         setLoading(false);
         onNext();

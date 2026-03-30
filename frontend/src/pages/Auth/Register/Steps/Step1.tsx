@@ -8,15 +8,15 @@ type Step3Props = {
 
 export const Step1 = (props: Step3Props) => {
   const { onNext, onChange } = props;
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim() === '') {
+    if (username.trim() === '') {
       alert('Please enter your name');
       return;
     }
-    onChange({ email });
+    onChange({ username });
     onNext();
   }
   return (
@@ -28,7 +28,7 @@ export const Step1 = (props: Step3Props) => {
       </h1>
       <form action="" className="auth__form" onSubmit={handleSubmit}>
         <div className="auth__input__container">
-          <input value={email} type="email" className="auth__input__field" placeholder="Name" id="auth-name" onChange={(e) => setEmail(e.target.value)}/>
+          <input value={username} type="email" className="auth__input__field" placeholder="Name" id="auth-name" onChange={(e) => setUsername(e.target.value)}/>
         </div>
 
         <button className="auth__submit auth__bottom">Next</button>

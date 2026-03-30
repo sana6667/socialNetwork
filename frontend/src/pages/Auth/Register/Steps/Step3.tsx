@@ -8,7 +8,7 @@ type Step3Props = {
 };
 
 export const Step3 = (props: Step3Props) => {
-  const { onNext, onChange } = props;
+  const { onNext, onChange, onBack } = props;
   const [name, setName] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -22,7 +22,7 @@ export const Step3 = (props: Step3Props) => {
   }
   return (
     <div className="auth__container">
-      <a onClick={() => window.history.back()} className="auth__back"><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
+      <a onClick={onBack} className="auth__back"><img src="/imgs/Chevron_Left_MD.svg" alt="" /> Back</a>
       <progress className="auth__progress" value={3} max={8}></progress>
       <h1 className="auth__page__title">
         What’s your name?
