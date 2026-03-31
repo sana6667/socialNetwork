@@ -43,10 +43,10 @@ public class UserService : IUserService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task SetPrioritiesAsync(string userId, List<int> priorityIds)
+    public async Task SetPriorityAsync(string userId, int priorityId)
     {
         var user = await _dbContext.Users
-            .Include(u => u.Priorities)
+            .Include(u => u.Priority)
             .FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)
@@ -54,16 +54,7 @@ public class UserService : IUserService
             throw new Exception($"User wasn't not found");
         }
         
-        user.Priorities.Clear();
-
-        foreach (var priorityId in priorityIds.Distinct())
-        {
-            user.Priorities.Add(new UserPriority
-            {
-                UserId = user.Id,
-                PriorityId = priorityId
-            });
-        }
+       user.PriorityId = priorityId;
 
         await _dbContext.SaveChangesAsync();
     }
