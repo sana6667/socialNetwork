@@ -98,9 +98,9 @@ module "aws_bac" {
 
 }
 
-#module "dns_alb" {
- #  source = "../module/load-balancer"
-#}
+module "dns_alb" {
+   source = "../module/load-balancer"
+}
 
 
 output "tf_s3_arn" {
