@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SocialNetwork.Api.Controllers;
+using SocialNetwork.Api.Hubs;
 using SocialNetwork.Api.Middleware;
 using SocialNetwork.Application.Interfaces;
 using SocialNetwork.Application.Services;
@@ -19,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var jwt = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwt["Key"]!);
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -63,6 +65,7 @@ builder.Services.AddScoped<IInterestService, InterestService>();
 builder.Services.AddScoped<IPriorityService, PriorityService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -76,7 +79,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+builder.Services.AddSignalR();
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -94,6 +97,21 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = jwt["Issuer"],
             ValidAudience = jwt["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.HttpContext.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("hubs/chat"))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -151,7 +169,10 @@ app.UseAuthentication();
 app.UseMiddleware<JwtRevocationMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<ChatHub>("/hubs/chat");
 
+// health check (чтобы Kubernetes не убивал под)
+app.MapHealthChecks("/health").AllowAnonymous();
 
 app.Run();
 
