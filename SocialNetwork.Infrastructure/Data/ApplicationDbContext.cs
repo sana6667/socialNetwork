@@ -105,6 +105,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
             .HasIndex(p => p.CategoryId);
         builder.Entity<Post>()
             .HasIndex(p => new { p.CategoryId, p.CreatedAt });
+        builder.Entity<Post>()
+            .Property(p => p.Budget)
+            .HasPrecision(18, 2);
 
         builder.Entity<PostCategory>()
             .HasIndex(c => c.Slug)
@@ -131,6 +134,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
             .HasIndex(m => m.ChatId);
         builder.Entity<Message>()
             .HasIndex(m => m.SentAt);
+       
 
 
 
