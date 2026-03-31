@@ -15,13 +15,15 @@ public class Post
     public int CategoryId { get; set; }
     public PostCategory Category { get; set; }
     
-    public DateOnly StartDate { get; set; }
-    public DateOnly EndDate { get; set; }
+    public DateOnly? StartDate { get; set; }
+    public DateOnly? EndDate { get; set; }
+    public string? Destination { get; set; }
+    public string? From { get; set; }
     
     public double LatRounded { get; set; }
     public double LongRounded { get; set; }
     public bool IsActive { get; set; } = true;
-    public bool IsVarified { get; set; } = false;
+    public decimal? Budget { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     public ICollection<PostImage> Images { get; set; } = new List<PostImage>();
