@@ -6,13 +6,6 @@ terraform {
         }
 
     }
-    backend "s3" {
-        bucket = "cdn-buck-sana-556-ss"
-        key = "global/s3/terraform.tfstate"
-        region = "us-east-1"
-        dynamodb_table = "terraform-up-and-running-locks"
-        encrypt = true
-    }
 }
 
 provider "aws" {
@@ -98,10 +91,11 @@ module "aws_bac" {
 
 }
 
+/*
 module "dns_alb" {
    source = "../module/load-balancer"
 }
-
+*/
 
 output "tf_s3_arn" {
     value = module.terr_state_s3.s3_id_nam
