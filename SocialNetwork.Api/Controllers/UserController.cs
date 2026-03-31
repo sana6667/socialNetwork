@@ -96,7 +96,8 @@ public class UserController :ControllerBase
             LatRounded = latRounded,
             LngRounded = lngRounded,
             LocationUpdatedAt = latRounded.HasValue && lngRounded.HasValue? DateTime.UtcNow : null,
-            LastActiveAt = DateTime.UtcNow
+            LastActiveAt = DateTime.UtcNow,
+            PriorityId = registerDto.PriorityId
             
             
                 
@@ -115,17 +116,7 @@ public class UserController :ControllerBase
                 InterestId = interestId
             });
         }
-
-        foreach (var priorityId in registerDto.PriorityIds.Distinct())
-        {
-            _dbContext.UserPriorities.Add(new UserPriority
-            {
-                UserId = user.Id,
-                PriorityId = priorityId
-            });
-           
-        }
-
+        
         await _dbContext.SaveChangesAsync(ct);
         
         
