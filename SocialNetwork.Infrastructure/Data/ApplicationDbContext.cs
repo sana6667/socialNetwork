@@ -17,13 +17,16 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Interest> Interests { get; set; }
     public DbSet<UserInterest> UserInterests { get; set; }
     public DbSet<Priority>Priorities{ get; set; }
-    public DbSet<UserPriority> UserPriorities { get; set; }
+  
     
     public DbSet<Post> Posts { get; set; }
     public DbSet<PostLike> PostLikes { get; set; }
     public DbSet<PostComment> PostComments { get; set; }
     public DbSet<PostImage> PostImages { get; set; }
     public DbSet<PostCategory> PostCategories { get; set; }
+    public DbSet<Chat> Chats { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<ChatParticipant> ChatParticipants { get; set; }
     
     
     //додати таблиці постів, коментів та лайків, а також зв'язки між ними
@@ -45,19 +48,11 @@ public class ApplicationDbContext : IdentityDbContext<User>
             .WithMany(u => u.Users)
             .HasForeignKey(ui => ui.InterestId);
         
-        builder.Entity<UserPriority>()
-            .HasKey(ui => new { ui.UserId, ui.PriorityId });
-        
-        builder.Entity<UserPriority>()
-            .HasOne(ui => ui.User)
-            .WithMany(u => u.Priorities)
-            .HasForeignKey(ui => ui.UserId);
-        
-        builder.Entity<UserPriority>()
-            .HasOne(ui => ui.Priority)
-            .WithMany(u => u.Users)
-            .HasForeignKey(ui => ui.PriorityId);
-
+        builder.Entity<User>()
+            .HasOne(u=>u.Priority)
+            .WithMany(p=>p.Users)
+            .HasForeignKey(u => u.PriorityId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Post>()
             .HasOne(p => p.Category)
@@ -121,6 +116,21 @@ public class ApplicationDbContext : IdentityDbContext<User>
             .HasIndex(c => c.PostId);
         builder.Entity<PostLike>()
             .HasIndex(l => l.UserId);
+        
+        builder.Entity<ChatParticipant>()
+            .HasKey(x => new { x.UserId, x.ChatId });
+        builder.Entity<ChatParticipant>()
+            .HasOne(cp => cp.Chat)
+            .WithMany(c => c.Participants)
+            .HasForeignKey(cp => cp.ChatId);
+        builder.Entity<Message>()
+            .HasOne(m=>m.Chat)
+            .WithMany(c => c.Messages)
+            .HasForeignKey(m=>m.ChatId);
+        builder.Entity<Message>()
+            .HasIndex(m => m.ChatId);
+        builder.Entity<Message>()
+            .HasIndex(m => m.SentAt);
 
 
 
