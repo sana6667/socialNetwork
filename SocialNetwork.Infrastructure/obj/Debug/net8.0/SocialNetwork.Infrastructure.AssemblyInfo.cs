@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SocialNetwork.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+72a80cf1ff8e85b045fda42ec657a801dffb35f6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+04f0c7e04d352cb27a9f85e675fe7da96b48bf99")]
 [assembly: System.Reflection.AssemblyProductAttribute("SocialNetwork.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SocialNetwork.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

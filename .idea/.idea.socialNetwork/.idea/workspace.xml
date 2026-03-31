@@ -9,10 +9,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="186d357e-ca2f-4e80-9101-3f9c27d6d266" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.socialNetwork/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.socialNetwork/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/SocialNetwork.Api.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/SocialNetwork.Api.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/SocialNetwork.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/SocialNetwork.Infrastructure.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/SocialNetwork.Api.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/ref/SocialNetwork.Api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/ref/SocialNetwork.Api.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/refint/SocialNetwork.Api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/Debug/net8.0/refint/SocialNetwork.Api.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Api/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Api/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/SocialNetwork.Application.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/ref/SocialNetwork.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/ref/SocialNetwork.Application.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/refint/SocialNetwork.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/Debug/net8.0/refint/SocialNetwork.Application.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Application/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Application/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/SocialNetwork.Domain.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/ref/SocialNetwork.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/ref/SocialNetwork.Domain.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/refint/SocialNetwork.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/Debug/net8.0/refint/SocialNetwork.Domain.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Domain/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Domain/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/SocialNetwork.Infrastructure.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/ref/SocialNetwork.Infrastructure.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/ref/SocialNetwork.Infrastructure.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/refint/SocialNetwork.Infrastructure.dll" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/Debug/net8.0/refint/SocialNetwork.Infrastructure.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/SocialNetwork.Infrastructure/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +193,15 @@
       <workItem from="1773088786145" duration="3644000" />
       <workItem from="1773092489579" duration="995000" />
       <workItem from="1773171298898" duration="629000" />
-      <workItem from="1773171968671" duration="2835000" />
+      <workItem from="1773171968671" duration="5690000" />
+      <workItem from="1773507831668" duration="2158000" />
+      <workItem from="1774036480956" duration="7416000" />
+      <workItem from="1774077210323" duration="2025000" />
+      <workItem from="1774294318677" duration="1609000" />
+      <workItem from="1774471393797" duration="4709000" />
+      <workItem from="1774688094837" duration="8188000" />
+      <workItem from="1774784018456" duration="3801000" />
+      <workItem from="1774990641495" duration="1567000" />
     </task>
     <servers />
   </component>
