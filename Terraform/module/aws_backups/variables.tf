@@ -1,7 +1,8 @@
+/*
 variable "con_str_value" {
   type = string
 }
-/*
+
 variable "stor_account_import" {
   type = object({
     stor_account_name = string

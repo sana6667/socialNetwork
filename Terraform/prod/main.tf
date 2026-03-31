@@ -84,7 +84,7 @@ module "blob_storage" {
 
 module "aws_bac" {
     source = "../module/aws_backups"
-    con_str_value = module.blob_storage.con_str
+    #con_str_value = module.blob_storage.con_str
     rds_id = module.rds.rds_id
     bastion_admin_id = module.bastion.bastion_admin_id
     
