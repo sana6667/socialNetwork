@@ -4,10 +4,6 @@ terraform {
             source = "hashicorp/aws"
             version = ">= 5.60"
         }
-        azurerm = {
-            source = "hashicorp/azurerm"
-            version = ">=4.0.0"
-        }
 
     }
 }
@@ -16,11 +12,6 @@ provider "aws" {
     region = "us-east-1"
 }
 
-provider "azurerm" {
-    features {
-      
-    }
-} 
 
 module "network" {
     source = "../module/eks/data-panel/networks"
@@ -84,14 +75,16 @@ module "waf_acl" {
     source = "../module/waf"
 }
 
+/*
 module "blob_storage" {
     source = "../module/storage-account"
 }
+*/
+
 
 module "aws_bac" {
     source = "../module/aws_backups"
     con_str_value = module.blob_storage.con_str
-    stor_account_import = module.blob_storage.blob_stor_export
     rds_id = module.rds.rds_id
     bastion_admin_id = module.bastion.bastion_admin_id
     

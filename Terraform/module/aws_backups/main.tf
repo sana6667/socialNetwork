@@ -4,11 +4,6 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 5.60"
     }
-
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 4.0"
-    }
   }
 }
 
@@ -16,9 +11,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-provider "azurerm" {
-  features {}
-}
 
 
 module "eventBrigeCron" {
@@ -39,7 +31,7 @@ module "lambda_snapshot_rds" {
     
 }
 
-
+/*
 module "lambda_upload" {
     source = "./lambda/upload_to_azure"
     lambda_role_upload_arn = module.s3_backup.lambda_role_upload
@@ -48,6 +40,7 @@ module "lambda_upload" {
     sas_token_value = module.sas_token.sas_token
     
 }
+
 
 module "sas_token" {
     source = "./sas-token"
@@ -61,3 +54,4 @@ module "s3_backup" {
 output "s3_bac_arn" {
   value = module.s3_backup.s3_backup_arn
 }
+*/

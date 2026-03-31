@@ -1,7 +1,7 @@
 variable "con_str_value" {
   type = string
 }
-
+/*
 variable "stor_account_import" {
   type = object({
     stor_account_name = string
@@ -9,7 +9,7 @@ variable "stor_account_import" {
     container_name = string
   })
 }
-
+*/
 variable "rds_id" {
   type = string
 }
