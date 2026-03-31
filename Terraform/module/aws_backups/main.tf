@@ -46,7 +46,7 @@ module "sas_token" {
     source = "./sas-token"
     con_str_value = var.con_str_value
 }
-
+*/
 module "s3_backup" {
     source = "./s3-backups"
 }
@@ -54,4 +54,4 @@ module "s3_backup" {
 output "s3_bac_arn" {
   value = module.s3_backup.s3_backup_arn
 }
-*/
+
