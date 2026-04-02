@@ -20,7 +20,7 @@ public class EmailService : IEmailService
             _config["SendGrid:FromName"]);
 
         var to = new EmailAddress(email);
-        var msg = MailHelper.CreateSingleEmail(from, to, subject, "", content);
+        var msg = MailHelper.CreateSingleEmail(from, to, subject,  "Please confirm your email", content);
 
         await client.SendEmailAsync(msg);
     }
